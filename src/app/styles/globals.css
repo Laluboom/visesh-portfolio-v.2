@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* Theme Customization (optional) */
+@theme {
+  --font-sans: system-ui, sans-serif;
+  --color-bg: #ffffff;
+  --color-text: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-bg: #000000;
+    --color-text: #ffffff;
+  }
+}
+
+.dark {
+  --color-bg: #000000;
+  --color-text: #ffffff;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #ccc, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
