@@ -8,7 +8,7 @@ Suika work: even a perfect fix to the input overlay would leave the game unable 
 
 ---
 
-## 1. [BUG] The Suika merge rule is mathematically unreachable on a straight drop
+## 1. `[DONE 2026-09-26]` The Suika merge rule is mathematically unreachable on a straight drop
 
 The core mechanic of a fruit-merge game never fires, and it is not a tuning problem — the
 physics pass actively cancels the merge pass, in this exact order inside one frame
