@@ -1,65 +1,79 @@
-# Daily review — visesh-portfolio-v.2 — 2026-09-16
+# Daily review — 2026-09-26
 
 ## What I looked at
 
-Three commits total, and the last one (`bba2be9`, dependency bump to Next 16) was 2026-05-31 —
-about three and a half months idle. I read every source file in `src/app` (there are only twenty),
-plus the configs. There was no existing `todo.md` or `reference.md`, so nothing was stale to reconcile.
+Full source read: both entry points (`layout.tsx`, `page.tsx`), the nav, all three home
+sections, `/about`, `/contact`, the projects index, and both interactive project pages —
+`DevilSuika` (`Fruits.ts`, `GameCanvas.tsx`, `page.tsx`, `GameUI.tsx`) and `arcaderoom`. Plus
+config, and drei's internals to find out where `Environment preset="sunset"` actually loads from.
 
-**I did run it.** `npm ci` (412 packages, clean), `npm run dev` came up on Turbopack in 871ms, and I
-checked every route with curl and read the served HTML. I could not get a screenshot — the Windows
-Chrome binary needed an approval this non-interactive run couldn't obtain — so the browser check is
-HTTP status codes and markup rather than pixels. Dev server is stopped and the working tree is clean.
+**I did run it.** `npm run dev` came up on Next 16.2.6/Turbopack and I exercised it over HTTP:
+status codes for all nine routes, the served `<title>`/`<meta description>`, and the rendered
+anchor markup on `/projects`. A headless Chrome screenshot was denied by the sandbox, so this was
+markup-level inspection rather than a visual render. Dev server stopped afterwards.
 
-## The main finding
+Where reading code left a question I couldn't settle by eye, I replicated `Fruits.ts` plus the
+`draw()` frame body headlessly in Node (in `/tmp`, nothing in the repo) and ran the physics. That
+is where the main finding came from.
 
-The Suika game is broken, and the interesting part is *how* it's broken.
+## The finding
 
-`DevilSuika/page.tsx:20` lays a full-bleed `absolute inset-0 z-10` div over the canvas to catch
-clicks. The handler then does `(e.target as HTMLCanvasElement).getBoundingClientRect()` — but
-`e.target` is that overlay, not the canvas. The overlay is viewport-sized while the canvas is
-`max-w-[800px]` and centred, so the click x-coordinate is measured in the wrong space and then
-clamped to canvas width in `GameCanvas.tsx:24`. On a 1280px window fruit lands roughly 240px right of
-the cursor, and every click past x≈800 piles up on the right wall. TypeScript can't catch it because
-`e.target` is typed `EventTarget` and the cast is simply a false assertion.
+**The fruit-merge game cannot merge fruit on a normal drop, and it is not a tuning problem — the
+physics pass structurally cancels the merge pass.** Inside one frame `GameCanvas.tsx` runs
+gravity, then `resolveCollision`, then the merge check. `resolveCollision` (`Fruits.ts:60-69`)
+separates an overlapping pair by *exactly* `overlap = minDist - dist`, so afterwards the distance
+is exactly `minDist`. The merge test at `GameCanvas.tsx:95` is a strict `if (dist < minDist)`.
+False.
 
-The same overlay swallows `mousemove`, so the canvas listener at `GameCanvas.tsx:58` never fires and
-`mouseX` stays `null` — which makes the ghost preview fruit at lines 69-74 dead code.
+Floating-point noise usually rescues that within a frame or two. It cannot when `dx` is exactly
+`0`: `nx = dx / dist` is `0`, the x separation is a literal no-op, and the y separation lands on
+`minDist` with no rounding slop. And `dx` is exactly `0` for the normal way to play — `dropFruit`
+always uses the same clamped `fruitDropX`, and a `dx == 0` collision imparts no `vx`, so
+button-dropped fruit forms a perfectly vertical column forever. Simulated: two Cherries at
+identical x, **0 merges in 600 frames**, with 502 frames sitting at exactly-touching. The same
+pair offset by 5px merges immediately. Two Watermelons: same, 0 merges, 508 near-misses.
 
-That's the part that matters. `mouseX` is the dependency of the effect at `GameCanvas.tsx:39-123`,
-and its cleanup removes the two listeners but **never calls `cancelAnimationFrame`**, while `draw`
-re-arms itself at line 114. Right now the overlay is the only thing keeping that harmless. The
-instant someone makes mousemove reach the canvas — which is exactly the fix you'd reach for first —
-every mouse movement re-runs the effect and starts another immortal animation loop over the same
-`fruitsRef`. A second of cursor movement gives you dozens of loops all applying gravity to one array.
-So the naive fix is strictly worse than the bug. Task 1 is written to do both at once.
+The fix is nearly one line (`dist < minDist + 0.5`, or move the merge pass ahead of resolution),
+which makes it the best value-for-effort change in the repo. The same block has a second bug I
+confirmed: two max-tier Watermelons that *do* merge both delete themselves, because
+`GameCanvas.tsx:96-104` marks both as merged but creates no replacement — simulated, board ends
+empty.
 
-## Everything else
+This reorders last review's plan. Task 1 was the input-overlay/rAF pair; that is all still true
+and re-verified, but fixing it would only have made it easier to watch fruit refuse to merge. It
+is now task 2, with a `dt` clamp folded in — I confirmed a single `dt = 3.0s` frame (returning to
+a background tab) teleports a fruit to the floor and launches it back up at `vy = -600`.
 
-Verified against the running server: three of the five cards on `/projects` are dead —
-`/projects/2048Game`, `/projects/js-mini-tools` and `/projects/how-i-built-my-portfolio` all 404.
-The served HTML still says `<title>My App</title>`. `/contact` lists `you@example.com` and
-`github.com/yourusername`, so there is no working way to contact anyone through this site, and the
-copy button reports "Copied!" unconditionally even when the clipboard write rejects. The homepage
-carousel advertises "Trial 1" through "Trial 5" with three identical descriptions and four links
-pointing at anchors that don't exist.
+## Also new
 
-One quiet one worth calling out: `npm run lint` has been broken since the Next 16 bump. `next lint`
-was removed in 16, so the CLI reads `lint` as a directory name and errors. Nothing has been linted in
-three months, which is probably why `(window as any)` in the orphaned `GameUI.tsx` went unnoticed.
+`/projects/arcaderoom` fetches its HDRI from `raw.githack.com` at runtime — a free third-party
+GitHub proxy, 1.4 MB, Cloudflare-fronted, resolved through drei's `presetsObj`. `useLoader` throws
+on failure and the `Suspense fallback={null}` has **no ErrorBoundary**, so a bad fetch takes down
+one of your only two working project pages instead of degrading to plainer lighting. I first
+recorded that URL as a hard 403; that turned out to be curl's default User-Agent, and with a
+browser UA it returns 200. So this is a dependency-and-error-handling risk, not a present outage.
 
-## What I'm proposing and why
+Going the other way: I tried to reproduce fruit escaping sideways through the missing left/right
+walls (`Fruits.ts:31-45`) — 25 cherries rained into a 100px band, 3000 frames — and could not.
+The heap stayed well inside the canvas. That item is demoted to a noted gap, not a bug.
 
-Five tasks in `todo.md`. The Suika overlay/rAF pair is first because it's the only interactive thing
-here, it's the top card on `/projects`, and it's the one finding where getting the fix order wrong
-actively hurts. The quick win bundles three mechanical edits — real metadata, a favicon, and the lint
-script — because the title is the single most visible thing on the site and the other two are one
-line each. Then the 404s, the contact details, and the placeholder carousel, in that order: those are
-ranked by how likely a visitor is to hit them.
+## What I'm proposing
 
-**Health:** the engineering is fine. This builds, serves fast, and is structured sensibly for its
-size. The gap between this and something shippable is content plus one genuine bug — not architecture.
-But it is a portfolio that currently 404s the majority of its own project links and can't be contacted,
-so it is not in a state to be shown to anyone yet. Given it's been idle 3.5 months, the honest advice
-is to spend one session on tasks 2-4 (about 75 minutes, all mechanical) and get it presentable before
-going near the game physics again.
+Ranked in `todo.md`: (1) the merge-rule fix plus max-tier annihilation, ~25 min; (2) the
+overlay + uncancelled rAF + `dt` clamp as one change, ~45 min; (3) **quick win** — real metadata
+(the site still serves `<title>My App</title>`), a favicon, and `package.json:9` where
+`"next lint"` has been silently broken since the Next 16 bump so nothing has been linted in four
+months; (4) the three project cards that 404, re-confirmed today; (5) purge `Trial 1`–`Trial 5`
+and `you@example.com`.
+
+## Honest read
+
+Nothing has been committed to source since 2026-05-31, and **none of the five tasks from the
+2026-09-16 review were started.** The scaffolding is genuinely decent — it builds, it serves, the
+structure is sensible, `Navbar.tsx` is clean. But three of five project cards 404, the one
+interactive demo doesn't work, and the tab still says "My App". The value here is not in the
+backlog length; it is in driving one item to actually done. Task 1 is 25 minutes and turns a
+broken demo into a working one. If that doesn't happen in the next couple of weeks, the honest
+move is to demote this out of active projects rather than keep reviewing it.
+
+Health: solid bones, zero shipped content, stalled.
