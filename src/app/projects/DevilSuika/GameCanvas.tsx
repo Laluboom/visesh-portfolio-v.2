@@ -92,12 +92,12 @@ useEffect(() => {
           const dist = Math.hypot(dx, dy);
           const minDist = a.radius + b.radius;
 
-          if (dist < minDist) {
-            mergedIndices.add(i);
-            mergedIndices.add(j);
-
+          if (dist < minDist + 0.5) {
             const nextIndex = fruitTypes.findIndex(f => f.name === a.type.name) + 1;
             if (nextIndex < fruitTypes.length) {
+              mergedIndices.add(i);
+              mergedIndices.add(j);
+
               const merged = new Fruit((a.x + b.x) / 2, (a.y + b.y) / 2 - 10, nextIndex);
               merged.vy = -200;
               newFruits.push(merged);
