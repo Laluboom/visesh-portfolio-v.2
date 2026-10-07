@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-26",
+  "date": "2026-10-07",
   "tier": "01_active_projects",
   "selected_by": "daily routine, weighted random",
   "files_inspected": [
@@ -9,6 +9,7 @@
     "src/app/home/Hero.tsx",
     "src/app/home/Features.tsx",
     "src/app/home/FAQ.tsx",
+    "src/app/about/page.tsx",
     "src/app/contact/page.tsx",
     "src/app/projects/page.tsx",
     "src/app/projects/DevilSuika/page.tsx",
@@ -16,168 +17,135 @@
     "src/app/projects/DevilSuika/Fruits.ts",
     "src/app/projects/DevilSuika/GameUI.tsx",
     "src/app/projects/arcaderoom/page.tsx",
+    "src/app/styles/globals.css",
     "package.json",
-    "tsconfig.json",
-    "next.config.ts",
-    "eslint.config.mjs",
-    "postcss.config.mjs",
     "README.md",
-    "todo.md (previous)",
-    "reference.md (previous)",
-    "node_modules/@react-three/drei/core/useEnvironment.js",
-    "node_modules/@react-three/drei/helpers/environment-assets.js"
+    "todo.md",
+    "reference.md"
   ],
   "issues_confirmed": [
     {
-      "id": "merge-rule-unreachable",
+      "id": "merge-unreachable-on-vertical-drop",
       "severity": "high",
-      "where": "src/app/projects/DevilSuika/GameCanvas.tsx:95 with src/app/projects/DevilSuika/Fruits.ts:60-69",
-      "what": "resolveCollision separates an overlapping pair by exactly `overlap = minDist - dist`, leaving them at exactly minDist; the merge test one pass later is a strict `dist < minDist`, so it is false. With dx exactly 0 (nx = 0, x never changes, no rounding slop) the test misses every frame forever. dx is exactly 0 for every drop from the Drop Fruit button because dropFruit always uses the same clamped fruitDropX and a dx==0 collision imparts no vx.",
-      "evidence": "Replicated Fruits.ts + the draw() body headlessly. Two Cherries at identical x: 0 merges over 600 frames, 502 frames sitting at exactly-touching. Two Watermelons at identical x: 0 merges, 508 near-misses. Same two Cherries with a 5px x-offset: merges to Strawberry."
+      "location": "src/app/projects/DevilSuika/GameCanvas.tsx:95",
+      "detail": "The merge test is a strict `dist < minDist`, but it runs AFTER resolveCollision (Fruits.ts:60-69) has separated the pair by exactly `minDist - dist`, leaving dist == minDist. With dx exactly 0 (nx = dx/dist = 0, so the x correction is a no-op) there is no floating-point slop to rescue it. dx is exactly 0 for normal play because dropFruit (GameCanvas.tsx:21-28) always reuses the same clamped fruitDropX and a dx==0 collision imparts no vx.",
+      "verified_by": "Re-derived Fruits.ts + the draw() body headlessly and ran 600 frames (10s). 2 Cherries at identical x: 0 merges, 500 frames sitting at exactly-touching. 2 Watermelons at identical x: 0 merges, 506 near-misses. 2 Cherries with a 5px x-offset: merges to Strawberry. 4 Cherries at identical x: only 1 merge, and only because a third body nudges x."
     },
     {
-      "id": "max-tier-pair-annihilates",
-      "severity": "medium",
-      "where": "src/app/projects/DevilSuika/GameCanvas.tsx:96-104",
-      "what": "Both indices are added to mergedIndices unconditionally, but `if (nextIndex < fruitTypes.length)` pushes no replacement for the top tier, so two merging Watermelons both delete themselves.",
-      "evidence": "Simulated two Watermelons with a 12px x-offset: board ends empty, 1 pair vanished with no replacement."
-    },
-    {
-      "id": "overlay-steals-input-wrong-coords",
+      "id": "max-tier-merge-deletes-both-fruits",
       "severity": "high",
-      "where": "src/app/projects/DevilSuika/page.tsx:10-14,20-23",
-      "what": "handleCanvasClick reads getBoundingClientRect() off `e.target`, which is the viewport-sized overlay, not the canvas. The canvas is w-[90vw] max-w-[800px] centred in a p-4 flex box (GameCanvas.tsx:126-127), so at 1280px wide drops land ~240px right of the cursor and saturate on the clamp at GameCanvas.tsx:24. The `as HTMLCanvasElement` cast hides it from TypeScript because e.target is typed EventTarget."
+      "location": "src/app/projects/DevilSuika/GameCanvas.tsx:96-104",
+      "detail": "Both indices are added to mergedIndices unconditionally, but `if (nextIndex < fruitTypes.length)` then pushes no replacement, so two merging Watermelons (the top tier) both delete themselves. Coupled to the bug above: applying the `+ 0.5` slop fix alone turns this from rare into the normal ending.",
+      "verified_by": "Headless replication. 2 Watermelons with a 12px x-offset: 1 merge, board ends EMPTY. With the proposed `dist < minDist + 0.5` slop, 2 Watermelons at identical x also merge to an EMPTY board."
     },
     {
-      "id": "uncancelled-raf-latent",
+      "id": "unclamped-dt-adds-energy",
+      "severity": "medium",
+      "location": "src/app/projects/DevilSuika/GameCanvas.tsx:62-64",
+      "detail": "dt is computed from raw rAF timestamps with no clamp. rAF pauses in a background tab, so the first frame on return carries a multi-second dt, and the floor bounce in Fruits.ts:39-43 multiplies the inflated vy by -0.4 — the body gains energy and tunnels through anything between.",
+      "verified_by": "Headless: a single dt = 3.0 frame moves a falling Cherry to y = 788 and leaves vy = -600."
+    },
+    {
+      "id": "overlay-steals-canvas-input",
       "severity": "high",
-      "where": "src/app/projects/DevilSuika/GameCanvas.tsx:114 and cleanup at 119-122, effect deps [mouseX] at :123",
-      "what": "draw() re-arms itself with requestAnimationFrame but the id is never captured and cleanup never calls cancelAnimationFrame. The effect is keyed on mouseX. The overlay currently blocks mousemove from ever reaching the canvas listener (:58), so mouseX stays null and the effect never re-runs — that is the only thing keeping this to one loop. Letting mousemove through spawns a new self-perpetuating loop per mouse move over the same fruitsRef."
+      "location": "src/app/projects/DevilSuika/page.tsx:20-23",
+      "detail": "A viewport-sized `absolute inset-0 z-10` div sits over the canvas. handleCanvasClick (page.tsx:10-14) casts e.target to HTMLCanvasElement, but e.target is the overlay, so getBoundingClientRect() returns the viewport rect rather than the canvas rect (canvas is w-[90vw] max-w-[800px] centred in a p-4 flex box, GameCanvas.tsx:126-127). At 1280px the canvas occupies roughly x in [240,1040], so drops land ~240px right of the cursor and anything past x~800 saturates on the clamp at GameCanvas.tsx:24. TypeScript cannot catch the bad cast because e.target is typed EventTarget. The overlay also swallows mousemove, so the canvas listener at GameCanvas.tsx:58 never fires, mouseX stays null, and the ghost preview at GameCanvas.tsx:69-74 is dead code.",
+      "verified_by": "Reading the component tree and the served markup; the overlay has no pointer-events-none and is not an ancestor of the canvas, so mousemove cannot reach it."
     },
     {
-      "id": "preview-fruit-dead-code",
-      "severity": "low",
-      "where": "src/app/projects/DevilSuika/GameCanvas.tsx:69-74",
-      "what": "The translucent preview fruit is gated on `mouseX !== null`, which never becomes true because the overlay swallows mousemove. Nothing ever shows where a fruit will land."
-    },
-    {
-      "id": "no-dt-clamp",
-      "severity": "medium",
-      "where": "src/app/projects/DevilSuika/GameCanvas.tsx:62-64 and src/app/projects/DevilSuika/Fruits.ts:31-45",
-      "what": "dt is used raw. rAF pauses in a background tab, so the first frame back carries a multi-second dt.",
-      "evidence": "One frame with dt = 3.0s teleports a Cherry from y=50 to the floor (y=788) and launches it back up at vy=-600 — it gains energy and tunnels through anything between."
-    },
-    {
-      "id": "colocated-fruits-never-separate",
-      "severity": "low",
-      "where": "src/app/projects/DevilSuika/Fruits.ts:60",
-      "what": "The `dist !== 0` guard makes resolveCollision a no-op for two fruits at the identical point. Verified directly. Merged fruits spawn at the exact midpoint (GameCanvas.tsx:101), so two simultaneous merges at one spot reach it."
-    },
-    {
-      "id": "three-project-cards-404",
+      "id": "uncancelled-raf-loop-latent-leak",
       "severity": "high",
-      "where": "src/app/projects/page.tsx:16,30,37",
-      "what": "/projects/2048Game, /projects/how-i-built-my-portfolio and /projects/js-mini-tools all return 404 against a running dev server. Only /projects/DevilSuika and /projects/arcaderoom return 200. 3 of 5 cards on the projects page are dead."
+      "location": "src/app/projects/DevilSuika/GameCanvas.tsx:39-123",
+      "detail": "The effect's only dep is mouseX, and its cleanup (119-122) removes both listeners but never calls cancelAnimationFrame, while draw re-arms itself at line 114. The input bug above is the only thing currently masking this: the moment mousemove reaches the canvas, every mouse movement sets state, re-runs the effect, and spawns another self-perpetuating rAF loop over the same fruitsRef — dozens of concurrent loops each applying gravity to one shared array. Fixing the overlay without this makes the game dramatically worse.",
+      "verified_by": "Reading the effect: no rAF id is captured anywhere in the file, and the returned cleanup contains only two removeEventListener calls."
     },
     {
-      "id": "internal-routes-open-in-new-tab",
+      "id": "three-of-five-project-cards-404",
+      "severity": "high",
+      "location": "src/app/projects/page.tsx:16,30,37",
+      "detail": "/projects/2048Game, /projects/how-i-built-my-portfolio and /projects/js-mini-tools are linked from the main project grid but no such routes exist. Only /projects/DevilSuika and /projects/arcaderoom resolve.",
+      "verified_by": "HTTP against a running dev server 2026-10-07: those three return 404; /, /about, /contact, /projects, /projects/DevilSuika, /projects/arcaderoom all return 200."
+    },
+    {
+      "id": "internal-route-opens-in-new-tab",
       "severity": "low",
-      "where": "src/app/projects/page.tsx:52",
-      "what": "target={project.type === 'game' ? '_blank' : '_self'} applies _blank to internal Next routes. Confirmed in served markup: href=\"/projects/DevilSuika\" target=\"_blank\"."
+      "location": "src/app/projects/page.tsx:52",
+      "detail": "target is set from project.type, so internal Next routes get target=\"_blank\". Every card is also a raw <a> rather than next/link, so each navigation is a full page reload (same in home/Hero.tsx:12,15 and home/Features.tsx:64; Navbar.tsx already uses Link correctly).",
+      "verified_by": "Served markup contains `href=\"/projects/DevilSuika\" target=\"_blank\"` and `href=\"/projects/2048Game\" target=\"_blank\"`."
     },
     {
-      "id": "raw-anchors-instead-of-next-link",
-      "severity": "low",
-      "where": "src/app/projects/page.tsx:49, src/app/home/Hero.tsx:12,15, src/app/home/Features.tsx:64",
-      "what": "Internal navigation uses raw <a>, so every click is a full page reload instead of a client transition. Navbar.tsx already uses next/link correctly."
-    },
-    {
-      "id": "scaffold-metadata-no-favicon",
+      "id": "scaffold-metadata-still-served",
       "severity": "medium",
-      "where": "src/app/layout.tsx:4-7",
-      "what": "Served markup still contains <title>My App</title> and <meta name=\"description\" content=\"Next.js with TailwindCSS and navbar\">. Confirmed by curl against the dev server. src/app/favicon.ico was deleted in 9357fbd and never replaced."
+      "location": "src/app/layout.tsx:4-7",
+      "detail": "The site serves the create-next-app placeholder metadata as its title, description and link preview. There is also no favicon — src/app/favicon.ico was deleted in 9357fbd and never replaced.",
+      "verified_by": "curl localhost:3000 returns `<title>My App</title>` and `<meta name=\"description\" content=\"Next.js with TailwindCSS and navbar\"/>`; no `<link rel=\"icon\">` in the served head."
     },
     {
-      "id": "lint-script-broken",
+      "id": "lint-script-broken-since-next-16",
       "severity": "medium",
-      "where": "package.json:9",
-      "what": "\"lint\": \"next lint\" — next lint was removed in Next 16 (repo is on next ^16.2.6) and the CLI now treats `lint` as a directory argument, so the script fails. Nothing has been linted since the 2026-05-31 upgrade."
+      "location": "package.json:9",
+      "detail": "`next lint` was removed in Next 16 (repo is on next ^16.2.6), so the CLI parses `lint` as a project directory. Nothing has been linted since the dependency bump in bba2be9.",
+      "verified_by": "`npm run lint` fails with: Invalid project directory provided, no such directory: /home/laluboom/repos/01_active_projects/visesh-portfolio-v.2/lint"
     },
     {
-      "id": "arcaderoom-remote-cdn-no-error-boundary",
+      "id": "clipboard-claims-success-on-failure",
       "severity": "medium",
-      "where": "src/app/projects/arcaderoom/page.tsx:17,20",
-      "what": "Environment preset=\"sunset\" resolves via drei's presetsObj to https://raw.githack.com/pmndrs/drei-assets/456060a.../hdri/venice_sunset_1k.hdr (node_modules/@react-three/drei/core/useEnvironment.js:8) — a required runtime asset fetched from a free third-party GitHub proxy. useEnvironment calls useLoader, which throws on failure, and the Suspense at :17 has no ErrorBoundary above it, so a failed fetch takes down the whole route rather than degrading to plainer lighting.",
-      "evidence": "Fetched the URL: 1.4 MB (1397783 bytes), 301 to raw.githubusercontent.com, Cloudflare-fronted. A plain curl with no browser User-Agent gets HTTP 403; with a browser UA it follows the redirect and returns 200. So the asset is behind bot filtering the project does not control."
+      "location": "src/app/contact/page.tsx:8-12",
+      "detail": "handleCopyEmail calls navigator.clipboard.writeText(...) without awaiting or catching, then calls setCopied(true) unconditionally. On a non-secure origin or with clipboard permission denied the promise rejects unhandled and the UI still reports \"Copied!\" — the opposite of what happened.",
+      "verified_by": "Reading the handler: no await, no .catch, no .then; setCopied(true) is on the next statement."
     },
     {
-      "id": "arcaderoom-silent-black-canvas",
+      "id": "placeholder-identity-throughout",
       "severity": "medium",
-      "where": "src/app/projects/arcaderoom/page.tsx:17",
-      "what": "6.4 MB public/room/arcade.glb plus the 1.4 MB remote HDRI ~= 7.8 MB loaded behind Suspense fallback={null}, with no useGLTF.preload. All lights are inside the Suspense too, so the user gets a silent black canvas with zero loading indication."
-    },
-    {
-      "id": "clipboard-silent-failure",
-      "severity": "low",
-      "where": "src/app/contact/page.tsx:8-12",
-      "what": "handleCopyEmail calls navigator.clipboard.writeText(...) without awaiting or catching, then setCopied(true) unconditionally. On a non-secure origin or with permission denied the promise rejects unhandled and the UI still reports \"Copied!\"."
-    },
-    {
-      "id": "placeholder-contact-details",
-      "severity": "medium",
-      "where": "src/app/contact/page.tsx:9,31,39,49,59",
-      "what": "Every contact route is scaffold: you@example.com, github.com/yourusername, linkedin.com/in/yourprofile, yourportfolio.com. There is no working way to reach the author from the site."
-    },
-    {
-      "id": "placeholder-features-and-dead-anchors",
-      "severity": "medium",
-      "where": "src/app/home/Features.tsx:5-36",
-      "what": "The carousel directly below the hero is titled Trial 1 through Trial 5, three of five share a byte-identical description (lines 20, 26, 32), and the links /#designs (:15) and /#collabs (:21,:27,:33) point at anchors that do not exist — page.tsx:8-10 renders only #hero, #features and #faq. Four of five Visit buttons jump nowhere."
+      "location": "src/app/contact/page.tsx:9,31,39,49,59 and src/app/home/Features.tsx:5-36",
+      "detail": "There is no working way to contact the owner: you@example.com, github.com/yourusername, linkedin.com/in/yourprofile, yourportfolio.com. The carousel directly below the hero is titled \"Trial 1\"-\"Trial 5\", three of the five share a byte-identical description (Features.tsx:20,26,32), and four of five \"Visit ->\" buttons target anchors that do not exist (/#designs, /#collabs — page.tsx:8-10 only renders #hero, #features, #faq). about/page.tsx:40 is still lorem ipsum, rendered three times.",
+      "verified_by": "Reading all three files."
     },
     {
       "id": "duplicate-dom-ids",
       "severity": "low",
-      "where": "src/app/page.tsx:9-10 with src/app/home/Features.tsx:46 and src/app/home/FAQ.tsx:32",
-      "what": "page.tsx wraps <Features /> in <section id=\"features\"> while Features.tsx also sets id=\"features\"; same duplication for #faq. Invalid HTML and ambiguous anchor targets."
+      "location": "src/app/page.tsx:9-10",
+      "detail": "page.tsx wraps the components in <section id=\"features\"> / <section id=\"faq\"> while Features.tsx:46 and FAQ.tsx:32 set the same ids internally. Invalid HTML and ambiguous anchor targets for the Navbar links.",
+      "verified_by": "Served markup contains id=\"features\" twice and id=\"faq\" twice (id=\"hero\" once)."
     },
     {
-      "id": "orphaned-gameui",
-      "severity": "low",
-      "where": "src/app/projects/DevilSuika/GameUI.tsx:5,17-19",
-      "what": "Imported nowhere. Calls (window as any).dropFruit?.() which nothing ever assigns, and its Reset button has no onClick at all. Dead file."
+      "id": "arcaderoom-depends-on-third-party-cdn-with-no-error-boundary",
+      "severity": "medium",
+      "location": "src/app/projects/arcaderoom/page.tsx:17,20",
+      "detail": "Environment preset=\"sunset\" resolves through drei's presetsObj to a raw.githack.com HDRI (node_modules/@react-three/drei/core/useEnvironment.js:8) fetched at runtime. useEnvironment calls useLoader, which throws on failure, and Suspense fallback={null} has no ErrorBoundary above it, so a failed fetch takes down the whole route instead of degrading to plainer lighting. Together with the 6.4 MB local public/room/arcade.glb and no useGLTF.preload, the page is a silent black canvas for seconds.",
+      "verified_by": "Reading arcaderoom/page.tsx and the drei useEnvironment source in node_modules; the Canvas subtree has no ErrorBoundary."
     },
     {
-      "id": "per-frame-allocations",
+      "id": "orphaned-gameui-component",
       "severity": "low",
-      "where": "src/app/projects/DevilSuika/GameCanvas.tsx:70,110-111",
-      "what": "Two fresh arrays rebuilt every frame even on an empty board, plus a throwaway Fruit allocated per frame for the preview. ~60 allocations/sec of pure garbage."
+      "location": "src/app/projects/DevilSuika/GameUI.tsx:5,17-19",
+      "detail": "Imported nowhere. Its Drop button calls (window as any).dropFruit, which nothing ever assigns, and its Reset button has no onClick at all. Dead code that reads like a second, broken control surface.",
+      "verified_by": "No import of GameUI anywhere under src/; DevilSuika/page.tsx renders its own buttons instead."
     },
     {
       "id": "no-tests-no-ci",
       "severity": "medium",
-      "where": "repo root",
-      "what": "No test runner, no test files, no CI workflow. Fruits.ts is plain classes with no DOM dependency, so the merge bug above was testable with a pure unit test from day one."
+      "location": "package.json:5-10",
+      "detail": "No test script, no test runner, no CI workflow. Fruits.ts is plain classes with no DOM dependency, so the merge bug above is cheaply unit-testable once the frame step is lifted out of GameCanvas.tsx — which is exactly the test that would have caught it.",
+      "verified_by": "package.json scripts are dev/build/start/lint only; no test files and no .github/workflows in the repo."
     },
     {
-      "id": "project-stalled",
+      "id": "three-reviews-zero-execution",
       "severity": "medium",
-      "where": "git log",
-      "what": "Only three real commits: scaffold 2025-06-29, all component work 2025-09-30, dependency bump 2026-05-31. No source changes in ~4 months, and none of the 2026-09-16 review's five tasks were started."
+      "location": "todo.md",
+      "detail": "Reviews on 2026-09-16, 2026-09-26 and 2026-10-07 have produced notes only. Every claim on the two prior lists was re-verified today and still holds, so the bottleneck is execution, not analysis. If the next review finds this list untouched too, the repo does not belong in 01_active_projects.",
+      "verified_by": "git log: the newest source commit is bba2be9 (2026-05-31); the only commits since are the two automated review-notes commits d9e08fe and 6e791ea, which touch only todo.md, reference.md, last_run.json and cron_brief_latest.md."
     }
   ],
   "browser_checked": true,
-  "browser_notes": "Ran npm run dev (Next 16.2.6, Turbopack) and exercised it over HTTP: route status codes for all 9 routes, served <title>/<meta description>, and the rendered anchor markup on /projects. Also fetched the drei HDRI URL directly to confirm size and Cloudflare behaviour. A headless Chrome screenshot was attempted but the command was denied by the sandbox, so this was markup-level inspection, not a visual render. Dev server stopped afterwards (port 3000 confirmed closed).",
-  "not_reproduced": [
-    "Fruits.ts:31-45 has no left/right wall handling, but 25 cherries rained into a 100px band over 3000 frames never escaped an 800px canvas (heap stayed within x 313..501). The missing walls are a real gap in the physics model but not a currently visible bug — deprioritised accordingly.",
-    "The drei HDRI URL was initially recorded as a hard 403. That was an artifact of curl's default User-Agent; with a browser UA it returns 200. The finding stands as a third-party-dependency and error-handling risk, not a present outage."
-  ],
+  "browser_notes": "Ran `npm run dev` and checked all nine routes over HTTP plus the served markup for /, /projects and /projects/DevilSuika. Headless-Chrome screenshots were attempted but the launch was not permitted in this session, so the visual review is markup-level only. Dev server was stopped before finishing (confirmed: localhost:3000 no longer answers).",
   "proposed_tasks": [
-    "[BUG] Suika merge rule is unreachable on a straight drop: resolveCollision (Fruits.ts:60-69) separates pairs to exactly minDist and the merge test (GameCanvas.tsx:95) is a strict <, which never fires when dx is exactly 0. Widen to `dist < minDist + 0.5` or merge before resolving; also stop max-tier pairs deleting themselves (GameCanvas.tsx:96-104). ~25 min.",
-    "[BUG] Fix the click overlay and the uncancelled rAF together: pointer position into a useRef, drop mouseX from the effect deps, cancelAnimationFrame in cleanup, compute drop-x from the canvas rect, and clamp dt (DevilSuika/page.tsx:10-23, GameCanvas.tsx:39-123). ~45 min.",
-    "[QUICK WIN ~15min] Real metadata in layout.tsx:4-7, add a favicon, and fix package.json:9 to \"eslint .\" so linting runs again.",
-    "[BUG] The three 404 project cards (projects/page.tsx:16,30,37) — mark coming-soon or stub the routes; drop target=_blank from internal links (:52) and switch cards/Hero to next/link. ~30 min.",
-    "[IMPROVEMENT] Purge the placeholder identity: Trial 1-5 and dead #designs/#collabs anchors in home/Features.tsx:5-36, and the you@example.com / yourusername contact details plus the silently-lying clipboard handler in contact/page.tsx. ~40 min."
+    "1. [BUG] Two lines make the fruit-merge game able to merge fruit: add slop to the merge test at GameCanvas.tsx:95 AND stop the top tier deleting both fruits at GameCanvas.tsx:96-104 — coupled, ~30 min",
+    "2. [QUICK WIN ~15min] Replace the scaffold metadata in layout.tsx:4-7, add a favicon, fix the broken lint script at package.json:9",
+    "3. [BUG] Remove the input overlay at DevilSuika/page.tsx:20-23 and, in the same change, cancel the rAF loop and clamp dt in GameCanvas.tsx:39-123 — ~45 min",
+    "4. [BUG] Stop the site lying to visitors: mark the 3 dead project cards coming-soon, drop target on internal links, put real contact details in contact/page.tsx, and make the clipboard confirmation honest — ~45 min",
+    "5. [TEST] Lift the frame step out of GameCanvas.tsx into a pure exported function and assert the three behaviours that fail today — ~30 min"
   ],
-  "verdict": "Builds and serves cleanly, but it has not moved in 4 months and the last review's list is untouched. The one interactive feature is broken three independent ways — newly confirmed this run, the merge rule at GameCanvas.tsx:95 can never fire on a vertical drop, so the fruit-merge game cannot merge fruit. Solid scaffolding, zero shipped content; needs a decision to drive one thing to done or shelve it.",
-  "next_review": "2026-10-06"
+  "verdict": "Well-structured shell of a real portfolio, idle 4.5 months, with its one interactive feature provably non-functional — and now three review cycles with zero code commits, which is the actual problem.",
+  "next_review": "2026-10-17"
 }
