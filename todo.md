@@ -15,7 +15,7 @@ and the game's core mechanic starts working.
 
 ---
 
-## 1. [BUG] Two lines make the fruit-merge game able to merge fruit
+## 1. `[DONE 2026-10-07]` Two lines make the fruit-merge game able to merge fruit
 
 The merge rule can never fire on a straight drop, and the fix for it uncovers a second bug —
 **change both or you will trade a game that can't merge for one that deletes your best fruit.**
