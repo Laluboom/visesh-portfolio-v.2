@@ -163,6 +163,13 @@ shape regardless — it gets physics out of the React component.
 
 ### Noted, not scheduled
 
+- **Make this app (or the stalklalu.com OAuth page) a private Cloud Run service if it's ever
+  moved there.** `cloud-run-private-endpoint-cheatsheet.md` (repo root, gitignored — personal
+  ops reference, not site content) has the exact `gcloud` steps: revoke `allUsers` invoker
+  access, create a `device-invoker` service account, grant it `roles/run.invoker`, mint a key,
+  and authenticate from the external device with an identity token. Not relevant while this
+  runs on Cloudflare — revisit only if a component of this ever moves to Cloud Run and needs to
+  stop being publicly invokable.
 - **The homepage carousel reads "Trial 1"–"Trial 5".** `src/app/home/Features.tsx:5-36`, the
   section directly below the hero. Three of the five share a byte-identical description
   (lines `20`, `26`, `32`), and four of five "Visit →" buttons jump nowhere: `/#designs`

@@ -40,6 +40,9 @@ yarn-error.log*
 /.open-next/
 /.wrangler/
 
+# personal ops reference, not site content
+/cloud-run-private-endpoint-cheatsheet.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
