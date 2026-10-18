@@ -8,7 +8,7 @@ export default function ContactPage() {
           <h1 className="text-4xl">Get in Touch</h1>
           <p className="text-lg">
             Email me directly, or check out my work on GitHub.
-            {/* TODO(visesh): add real availability/what you're open to, e.g. freelance, full-time, collab */}
+            {/* TODO(lalu): add real availability/what you're open to, e.g. freelance, full-time, collab */}
           </p>
         </div>
 

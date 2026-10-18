@@ -3,13 +3,13 @@ export default function PrivacyPage() {
     <main className="min-h-screen px-6 py-16">
       <section className="max-w-3xl mx-auto space-y-8">
         <div>
-          <h1 className="mb-2 text-4xl">Privacy Policy — Laluboom Foreman</h1>
+          <h1 className="mb-2 text-4xl">Privacy Policy for Laluboom Foreman</h1>
           <p className="text-sm">Last updated: 2026-10-18</p>
         </div>
 
         <p>
           Laluboom Foreman (&quot;Foreman&quot;) is a personal automation tool built,
-          operated, and used exclusively by its developer, Visesh Akbari. It has no
+          operated, and used exclusively by its developer, Lalu Boom. It has no
           other users, no customers, and no public sign-up. This policy describes how
           Foreman handles the developer&apos;s own Google account data, since it
           requests access to Gmail and Google Calendar under Google&apos;s OAuth
@@ -49,11 +49,11 @@ export default function PrivacyPage() {
           <h2 className="mb-3 text-xl">How this data is used</h2>
           <p>
             Data is used solely to generate the developer&apos;s own personal
-            reminders and summaries — for example, a notification that a new email
-            looks worth reading, or a reminder that a calendar event is starting soon.
-            All output is delivered only to the developer himself, through his own
-            private Discord server and personal messaging (WhatsApp). No other person
-            or account receives any output derived from this data.
+            reminders and summaries, like a notification that a new email looks worth
+            reading, or a reminder that a calendar event is starting soon. All output
+            is delivered only to the developer himself, through his own private
+            Discord server and personal messaging (WhatsApp). No other person or
+            account receives any output derived from this data.
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export default function PrivacyPage() {
         <div className="box">
           <h2 className="mb-3 text-xl">Revoking access</h2>
           <p>
-            Because this application has only one user — its own developer — he can
+            Because this application has only one user, its own developer, he can
             revoke its access at any time via his Google Account&apos;s{' '}
             <a
               href="https://myaccount.google.com/permissions"
@@ -115,10 +115,7 @@ export default function PrivacyPage() {
         </p>
 
         <p className="text-sm">
-          Developer contact:{' '}
-          <a href="mailto:viseshakbari2005@gmail.com">
-            viseshakbari2005@gmail.com
-          </a>
+          <a href="mailto:viseshakbari2005@gmail.com">Developer contact</a>
         </p>
       </section>
     </main>

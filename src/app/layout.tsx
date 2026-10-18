@@ -1,10 +1,9 @@
 import './styles/globals.css';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 
 export const metadata = {
-  title: 'Visesh Akbari',
-  description: 'Portfolio of Visesh Akbari — full-stack apps, ML fundamentals, and automation systems.',
+  title: 'Lalu Boom',
+  description: "Lalu Boom's portfolio. A pile of real projects, mostly code.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -13,7 +12,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Navbar />
         {children}
-        <Footer />
       </body>
     </html>
   );

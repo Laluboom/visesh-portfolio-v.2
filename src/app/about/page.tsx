@@ -6,7 +6,7 @@ export default function AboutPage() {
         <div className="pb-8 border-b-2 border-black">
           <h1 className="mb-2 text-4xl">About Me</h1>
           <p className="max-w-xl text-lg">
-            I'm Visesh Akbari. Here's what I've actually built and how I work.
+            I'm Lalu Boom. Here's what I've actually built and how I work.
           </p>
         </div>
 
@@ -15,9 +15,8 @@ export default function AboutPage() {
           <div className="box">
             <h2 className="mb-2 text-2xl">My Background</h2>
             <p>
-              I'm a math student, and I like building things end-to-end rather than just
-              reading about how they work.
-              That's shown up as a full-stack scraping app with Docker and CI (
+              I'm a math student and I'd rather build things end-to-end than just read about
+              how they work. That's a full-stack scraping app with Docker and CI (
               <a
                 href="https://github.com/Laluboom/map_scraper_systems"
                 target="_blank"
@@ -25,7 +24,7 @@ export default function AboutPage() {
               >
                 map_scraper_systems
               </a>
-              ), a receipt-OCR and bank-statement analysis tool (
+              ), a receipt-OCR and bank-statement tool (
               <a
                 href="https://github.com/Laluboom/BudgetSorter"
                 target="_blank"
@@ -33,8 +32,8 @@ export default function AboutPage() {
               >
                 BudgetSorter
               </a>
-              ), and smaller hands-on builds like an Arduino line-following robot and a
-              Minecraft mod. I spent about 10 months working through{' '}
+              ), and smaller stuff like an Arduino line-following robot and a Minecraft mod.
+              I spent about 10 months grinding through{' '}
               <a
                 href="https://github.com/Laluboom/ml-from-scratch"
                 target="_blank"
@@ -42,21 +41,21 @@ export default function AboutPage() {
               >
                 ml-from-scratch
               </a>
-              , implementing machine learning fundamentals in both Python and C++ instead of
-              just calling a library, which is still the project that taught me the most.
+              , building machine learning fundamentals in both Python and C++ instead of just
+              importing a library. It's still the project that taught me the most.
             </p>
           </div>
 
           <div className="box">
             <h2 className="mb-2 text-2xl">Philosophy</h2>
             <p>
-              The project I'd point to is Foreman — a Discord-driven multi-agent automation
-              system I built with 565+ tests, a four-tier LLM provider cascade, systemd-based
-              automation, and an escalation/circuit-breaker safety system. Building something
-              meant to run unattended changed how I think about code: I care more about
-              failure modes and recovery paths than the happy path, because the tests and the
-              circuit breaker exist precisely because autonomous systems fail in ways you
-              don't predict in advance. Read more on the{' '}
+              The project I'd point to is Foreman. It's a Discord-driven multi-agent
+              automation system I built with 565+ tests, a four-tier LLM provider cascade,
+              systemd-based automation, and an escalation/circuit-breaker safety system.
+              Building something that's meant to run unattended changed how I think about
+              code. I care more about failure modes and recovery paths than the happy path,
+              because the tests and the circuit breaker only exist because autonomous systems
+              fail in ways you don't see coming. Read more on the{' '}
               <a href="/projects/LaluPi">Foreman project page</a>.
             </p>
           </div>
@@ -94,8 +93,8 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
               >
                 pretty_fly_analytics
-              </a>{' '}
-              — a data/ML analytics project built from a PRD, including a neural net.
+              </a>
+              : a data/ML analytics project built from a PRD, including a neural net.
             </li>
             <li>
               <a
@@ -104,8 +103,8 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
               >
                 game_theory
-              </a>{' '}
-              — an Axelrod-style iterated prisoner's dilemma tournament.
+              </a>
+              : an Axelrod-style iterated prisoner's dilemma tournament.
             </li>
             <li>
               <a
@@ -114,8 +113,8 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
               >
                 3_Body_problem_Simulation
-              </a>{' '}
-              — a Runge-Kutta integrator simulating the three-body problem.
+              </a>
+              : a Runge-Kutta integrator simulating the three-body problem.
             </li>
             <li>
               <a
@@ -124,8 +123,8 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
               >
                 Custom_Extensions
-              </a>{' '}
-              — five browser extensions built from scratch.
+              </a>
+              : five browser extensions built from scratch.
             </li>
           </ul>
           <p className="mt-4 text-sm">

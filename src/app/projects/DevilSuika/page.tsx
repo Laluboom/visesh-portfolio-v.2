@@ -16,7 +16,7 @@ export default function SuikaPage() {
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
       <div className="box absolute left-1/2 top-4 z-30 max-w-md -translate-x-1/2 bg-white text-center text-sm text-black">
-        ⚠️ Known issue: fruit can&apos;t currently merge on a straight drop — see{' '}
+        ⚠️ Known issue: fruit can&apos;t currently merge on a straight drop. See{' '}
         <code>todo.md</code>.
       </div>
 

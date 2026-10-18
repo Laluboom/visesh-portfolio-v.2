@@ -2,7 +2,6 @@ import Link from 'next/link';
 
 const links = [
   { href: '/#features', label: 'Work' },
-  { href: '/#faq', label: 'FAQ' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
   { href: '/projects', label: 'Projects' },
@@ -15,7 +14,7 @@ export default function Navbar() {
 
       <div className="flex items-center justify-between px-4 py-3">
         <Link href="/" className="text-xl font-bold">
-          &lt;Visesh/&gt;
+          &lt;LaluBoom/&gt;
         </Link>
 
         <div className="hidden gap-1 sm:flex">

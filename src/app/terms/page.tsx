@@ -8,12 +8,12 @@ export default function TermsPage() {
         </div>
 
         <p>
-          This page sets out terms for two separate things under one roof: this
-          portfolio site, which is Visesh Akbari&apos;s personal portfolio, and{' '}
+          This page covers two separate things under one roof: this portfolio
+          site, which is Lalu Boom&apos;s personal portfolio, and{' '}
           <strong>Laluboom Foreman</strong>, a personal
-          automation tool he built and operates for his own private use.
-          Foreman&apos;s OAuth-compliance home page — the small, separate site
-          Google&apos;s consent screen checks for domain ownership — lives at{' '}
+          automation tool he built and runs for his own private use.
+          Foreman&apos;s OAuth-compliance home page (the small, separate site
+          Google&apos;s consent screen checks for domain ownership) lives at{' '}
           <a
             href="https://stalklalu.com"
             target="_blank"
@@ -31,12 +31,12 @@ export default function TermsPage() {
         <div className="box">
           <h2 className="mb-3 text-xl">The portfolio site</h2>
           <p>
-            Everything here — write-ups, project pages, demos — is provided as-is,
+            Everything here (write-ups, project pages, demos) is provided as-is,
             for personal and informational purposes, with no warranty of any kind.
             Code samples and project write-ups may be incomplete, experimental, or
             describe work still in progress; nothing here is offered as a supported
             product or service. Links to external sites and GitHub repositories are
-            provided for reference and are not endorsements of, or representations
+            provided for reference and aren&apos;t endorsements of, or representations
             about, anything beyond the developer&apos;s own control.
           </p>
         </div>
@@ -68,10 +68,7 @@ export default function TermsPage() {
         <hr />
 
         <p className="text-sm">
-          Contact:{' '}
-          <a href="mailto:viseshakbari2005@gmail.com">
-            viseshakbari2005@gmail.com
-          </a>
+          <a href="mailto:viseshakbari2005@gmail.com">Contact</a>
         </p>
       </section>
     </main>

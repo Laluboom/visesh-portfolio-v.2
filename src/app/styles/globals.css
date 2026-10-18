@@ -12,7 +12,6 @@
   --muted: #444444;
   --border: #000000;
   --link: #0000ee;
-  --link-visited: #551a8b;
   --highlight: #ffe600;
   --serif: Georgia, "Times New Roman", Times, serif;
   --mono: "Courier New", Courier, monospace;
@@ -20,12 +19,12 @@
 
 /*
   Everything below lives in Tailwind's base/components layers, which Tailwind
-  v4 always ranks BELOW the utilities layer in the cascade — so a utility
-  class like `sm:hidden` on an element always wins over `.btn`'s `display`,
-  regardless of source order or equal specificity. Do not move these rules
-  back out to plain unlayered CSS (that was a real bug here once: unlayered
-  `.btn { display: inline-block }` silently beat `.sm:hidden` and left a
-  "Menu" button visible on desktop).
+  v4 always ranks BELOW the utilities layer in the cascade. That means a
+  utility class like `sm:hidden` on an element always wins over `.btn`'s
+  `display`, regardless of source order or equal specificity. Do not move
+  these rules back out to plain unlayered CSS (that was a real bug here
+  once: unlayered `.btn { display: inline-block }` silently beat
+  `.sm:hidden` and left a "Menu" button visible on desktop).
 */
 @layer base {
   * {
@@ -74,7 +73,7 @@
   }
 
   a:visited {
-    color: var(--link-visited);
+    color: var(--link);
   }
 
   a:hover {

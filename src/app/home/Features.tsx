@@ -1,36 +1,33 @@
 const features = [
   {
     title: 'map_scraper_systems',
-    description:
-      'A full-stack scraping app with a separate backend and frontend, containerized with Docker and wired up with CI.',
+    description: 'Scrapes Google Maps for whatever format you need.',
     link: 'https://github.com/Laluboom/map_scraper_systems',
     emoji: '🗺️',
   },
   {
     title: 'ml-from-scratch',
-    description:
-      'ML fundamentals implemented from the ground up in both Python and C++, built over about 10 months.',
+    description: 'Wrote the math myself in Python and C++. Importing is stupid.',
     link: 'https://github.com/Laluboom/ml-from-scratch',
     emoji: '🧮',
   },
   {
     title: 'pretty_fly_analytics',
     description:
-      'A data/ML analytics project with a written PRD and a neural-net component for the prediction side.',
+      'Built for the Wayflyer Visionaries Hackathon off a real spec, with a neural net doing the actual predicting.',
     link: 'https://github.com/Laluboom/pretty_fly_analytics',
     emoji: '📊',
   },
   {
     title: 'game_theory',
     description:
-      'An Axelrod-style iterated prisoner’s dilemma tournament for comparing strategies head-to-head.',
+      "Pits iterated prisoner's dilemma strategies against each other, Axelrod-style, to see which one actually wins.",
     link: 'https://github.com/Laluboom/game_theory',
     emoji: '♟️',
   },
   {
     title: 'BudgetSorter',
-    description:
-      'Receipt OCR paired with bank statement analysis to reconcile spending automatically.',
+    description: "Reads your receipts with OCR and checks them against your bank statement so you don't have to.",
     link: 'https://github.com/Laluboom/BudgetSorter',
     emoji: '🧾',
   },
