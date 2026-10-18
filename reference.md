@@ -36,9 +36,10 @@ src/app/
   components/Navbar.tsx sticky top nav, 5 links, no mobile treatment; only file using next/link
   about/page.tsx        static, one card strip still lorem ipsum
   contact/page.tsx      every contact detail is a placeholder
-  projects/page.tsx     5 cards; 3 point at routes that do not exist
+  projects/page.tsx     6 cards; 3 point at routes that do not exist
   projects/DevilSuika/  Fruits.ts (physics) · GameCanvas.tsx (rAF loop) · page.tsx · GameUI.tsx (orphaned)
   projects/arcaderoom/  R3F scene: public/room/arcade.glb (6.4 MB, committed) + a remote 1.4 MB HDRI
+  projects/LaluPi/      static write-up, real content — links out to stalklalu.com
   styles/globals.css    Tailwind import + a `.text-gradient` helper
 ```
 
@@ -67,6 +68,22 @@ with the 6.4 MB local `.glb` and `fallback={null}`, the page is a silent black c
 Most user-facing copy is still placeholder: the homepage carousel reads "Trial 1"–"Trial 5",
 `/contact` lists `you@example.com` and `github.com/yourusername`, `/about` has lorem ipsum, and
 the served `<title>` is still `My App`.
+
+## 2026-10-18 addition: `/projects/LaluPi`
+
+New card + page, added by hand (not the doer). A short write-up about
+Foreman, the personal automation system in `~/repos/_agents/`, and why
+`stalklalu.com` exists: Google's OAuth consent screen auto-expires an
+unverified ("Testing" status) app's refresh tokens every 7 days, and
+moving to "Production" status requires a domain-verified home page +
+privacy policy — a bare `*.github.io` or Google Sites URL doesn't qualify,
+since Google requires provable exclusive domain ownership. `stalklalu.com`
+(Cloudflare Registrar + Cloudflare Pages, direct upload, no CI) is that
+domain; its home page and `/privacy` are the actual pages Google's
+consent screen now points at, hosted independently of this repo. This
+page here is just the portfolio write-up about that work, not a copy of
+the hosted pages themselves. Verified via `npm run build` — compiles
+clean, 8 static routes including this one.
 
 ## History
 

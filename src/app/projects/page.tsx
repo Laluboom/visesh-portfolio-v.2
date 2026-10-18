@@ -24,6 +24,13 @@ const projects = [
   },
   {
     type: 'blog',
+    title: 'LaluPi',
+    description: 'A Discord-driven multi-agent automation system running my own email, calendar, and PR review.',
+    emoji: '🤖',
+    link: '/projects/LaluPi',
+  },
+  {
+    type: 'blog',
     title: 'How I Built My Portfolio',
     description: 'A behind-the-scenes writeup of this very website.',
     emoji: '✍️',
