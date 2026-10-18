@@ -15,8 +15,7 @@ export default function Hero() {
         <a href="/contact" className="px-6 py-3 text-black transition-all duration-300 bg-white rounded-lg hover:bg-gray-200">
           Contact Me
         </a>
-        {/* TODO(visesh): add real resume/CV file at public/resume.pdf — this link points there but the file doesn't exist yet */}
-        <a href="/resume.pdf" className="px-6 py-3 text-white transition-all duration-300 border border-white/40 rounded-lg hover:border-white">
+        <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="px-6 py-3 text-white transition-all duration-300 border border-white/40 rounded-lg hover:border-white">
           Resume
         </a>
       </div>

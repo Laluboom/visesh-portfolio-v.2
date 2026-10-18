@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-const EMAIL = 'viseshakbari2005@gmail.com';
+const EMAIL = 'viseshakbari@gmail.com';
 
 export default function ContactPage() {
   const [copied, setCopied] = useState(false);
@@ -61,16 +61,14 @@ export default function ContactPage() {
           </a>
 
           <a
-            // TODO(visesh): add real LinkedIn URL
-            href="#"
+            href="https://www.linkedin.com/in/viseshakbari/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="p-6 bg-[#111] rounded-xl border border-white/10 hover:scale-105 transition-transform"
           >
             <div className="mb-2 text-3xl">🔗</div>
             <div className="mb-1 font-semibold">LinkedIn</div>
-            <div className="text-sm text-gray-400">
-              {/* TODO(visesh): add real LinkedIn URL */}
-              link coming soon
-            </div>
+            <div className="text-sm text-gray-400">in/viseshakbari</div>
           </a>
         </div>
       </section>

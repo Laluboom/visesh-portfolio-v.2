@@ -15,7 +15,8 @@ export default function AboutPage() {
           <div className="p-6 bg-[#111] rounded-xl border border-white/10 hover:border-white/20 transition">
             <h2 className="mb-2 text-2xl font-semibold">My Background</h2>
             <p className="text-gray-400">
-              I like building things end-to-end rather than just reading about how they work.
+              I'm a math student, and I like building things end-to-end rather than just
+              reading about how they work.
               That's shown up as a full-stack scraping app with Docker and CI (
               <a
                 href="https://github.com/Laluboom/map_scraper_systems"
@@ -64,6 +65,30 @@ export default function AboutPage() {
               </a>
               .
             </p>
+          </div>
+        </div>
+
+        {/* Skills */}
+        <div className="p-6 bg-[#111] rounded-xl border border-white/10">
+          <h2 className="mb-4 text-2xl font-semibold">Skills &amp; Tools</h2>
+          <div className="flex flex-wrap gap-3">
+            {[
+              'Python',
+              'JavaScript',
+              'HTML/CSS',
+              'SolidWorks',
+              'AutoCAD',
+              'Inventor',
+              'Raspberry Pi',
+              'Arduino',
+            ].map((skill) => (
+              <span
+                key={skill}
+                className="px-4 py-2 text-sm text-gray-300 bg-black border border-white/10 rounded-lg"
+              >
+                {skill}
+              </span>
+            ))}
           </div>
         </div>
 
