@@ -1,20 +1,20 @@
 export default function AboutPage() {
   return (
-    <main className="min-h-screen px-6 py-16 text-white bg-black">
+    <main className="px-6 py-16">
       <section className="max-w-5xl mx-auto space-y-12">
         {/* Header */}
-        <div className="text-center">
-          <h1 className="mb-2 text-4xl font-bold">About Me</h1>
-          <p className="max-w-xl mx-auto text-lg text-gray-400">
+        <div className="pb-8 border-b-2 border-black">
+          <h1 className="mb-2 text-4xl">About Me</h1>
+          <p className="max-w-xl text-lg">
             I'm Visesh Akbari. Here's what I've actually built and how I work.
           </p>
         </div>
 
         {/* Two-Column Block */}
         <div className="grid items-start gap-8 md:grid-cols-2">
-          <div className="p-6 bg-[#111] rounded-xl border border-white/10 hover:border-white/20 transition">
-            <h2 className="mb-2 text-2xl font-semibold">My Background</h2>
-            <p className="text-gray-400">
+          <div className="box">
+            <h2 className="mb-2 text-2xl">My Background</h2>
+            <p>
               I'm a math student, and I like building things end-to-end rather than just
               reading about how they work.
               That's shown up as a full-stack scraping app with Docker and CI (
@@ -22,7 +22,6 @@ export default function AboutPage() {
                 href="https://github.com/Laluboom/map_scraper_systems"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-white"
               >
                 map_scraper_systems
               </a>
@@ -31,7 +30,6 @@ export default function AboutPage() {
                 href="https://github.com/Laluboom/BudgetSorter"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-white"
               >
                 BudgetSorter
               </a>
@@ -41,7 +39,6 @@ export default function AboutPage() {
                 href="https://github.com/Laluboom/ml-from-scratch"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-white"
               >
                 ml-from-scratch
               </a>
@@ -50,9 +47,9 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="p-6 bg-[#111] rounded-xl border border-white/10 hover:border-white/20 transition">
-            <h2 className="mb-2 text-2xl font-semibold">Philosophy</h2>
-            <p className="text-gray-400">
+          <div className="box">
+            <h2 className="mb-2 text-2xl">Philosophy</h2>
+            <p>
               The project I'd point to is Foreman — a Discord-driven multi-agent automation
               system I built with 565+ tests, a four-tier LLM provider cascade, systemd-based
               automation, and an escalation/circuit-breaker safety system. Building something
@@ -60,17 +57,14 @@ export default function AboutPage() {
               failure modes and recovery paths than the happy path, because the tests and the
               circuit breaker exist precisely because autonomous systems fail in ways you
               don't predict in advance. Read more on the{' '}
-              <a href="/projects/LaluPi" className="underline hover:text-white">
-                Foreman project page
-              </a>
-              .
+              <a href="/projects/LaluPi">Foreman project page</a>.
             </p>
           </div>
         </div>
 
         {/* Skills */}
-        <div className="p-6 bg-[#111] rounded-xl border border-white/10">
-          <h2 className="mb-4 text-2xl font-semibold">Skills &amp; Tools</h2>
+        <div className="box">
+          <h2 className="mb-4 text-2xl">Skills &amp; Tools</h2>
           <div className="flex flex-wrap gap-3">
             {[
               'Python',
@@ -82,10 +76,7 @@ export default function AboutPage() {
               'Raspberry Pi',
               'Arduino',
             ].map((skill) => (
-              <span
-                key={skill}
-                className="px-4 py-2 text-sm text-gray-300 bg-black border border-white/10 rounded-lg"
-              >
+              <span key={skill} className="px-4 py-2 text-sm border-2 border-black">
                 {skill}
               </span>
             ))}
@@ -93,15 +84,14 @@ export default function AboutPage() {
         </div>
 
         {/* What I've Built */}
-        <div className="p-6 bg-[#111] rounded-xl border border-white/10">
-          <h2 className="mb-4 text-2xl font-semibold">A Few Other Things I've Built</h2>
-          <ul className="grid gap-3 text-sm text-gray-400 sm:grid-cols-2">
+        <div className="box">
+          <h2 className="mb-4 text-2xl">A Few Other Things I've Built</h2>
+          <ul className="grid gap-3 text-sm sm:grid-cols-2">
             <li>
               <a
                 href="https://github.com/Laluboom/pretty_fly_analytics"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white underline hover:text-gray-300"
               >
                 pretty_fly_analytics
               </a>{' '}
@@ -112,7 +102,6 @@ export default function AboutPage() {
                 href="https://github.com/Laluboom/game_theory"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white underline hover:text-gray-300"
               >
                 game_theory
               </a>{' '}
@@ -123,7 +112,6 @@ export default function AboutPage() {
                 href="https://github.com/Laluboom/3_Body_problem_Simulation"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white underline hover:text-gray-300"
               >
                 3_Body_problem_Simulation
               </a>{' '}
@@ -134,21 +122,15 @@ export default function AboutPage() {
                 href="https://github.com/Laluboom/Custom_Extensions"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white underline hover:text-gray-300"
               >
                 Custom_Extensions
               </a>{' '}
               — five browser extensions built from scratch.
             </li>
           </ul>
-          <p className="mt-4 text-sm text-gray-500">
+          <p className="mt-4 text-sm">
             More of this is on{' '}
-            <a
-              href="https://github.com/Laluboom"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-white"
-            >
+            <a href="https://github.com/Laluboom" target="_blank" rel="noopener noreferrer">
               github.com/Laluboom
             </a>
             .

@@ -5,9 +5,9 @@ import FAQ from './home/FAQ';
 export default function Home() {
   return (
     <main>
-      <section id="hero"><Hero /></section>
-      <section id="features"><Features /></section>
-      <section id="faq"><FAQ /></section>
+      <Hero />
+      <Features />
+      <FAQ />
     </main>
   );
 }

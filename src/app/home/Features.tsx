@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-
 const features = [
   {
     title: 'map_scraper_systems',
@@ -40,51 +36,25 @@ const features = [
   },
 ];
 
-
 export default function Features() {
-  const [active, setActive] = useState(1); // index of expanded panel
-
-  const next = () => setActive((active + 1) % features.length);
-  const prev = () => setActive((active - 1 + features.length) % features.length);
-
   return (
-    <section id="features" className="min-h-screen px-4 py-12 overflow-hidden text-white bg-black">
-      <h2 className="mb-12 text-4xl font-bold text-center">Projects</h2>
+    <section id="features" className="px-4 py-16 border-b-2 border-black">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="mb-8 text-3xl">Projects</h2>
 
-      <div className="flex items-center justify-center gap-4 overflow-x-auto">
-        {features.map((feature, index) => (
-          <div
-            key={index}
-            onClick={() => setActive(index)}
-            className={`relative flex-shrink-0 transition-all duration-500 ease-in-out cursor-pointer border border-white/20 rounded-xl overflow-hidden ${active === index ? 'w-[60vw]' : 'w-[15vw]'} h-[75vh] flex flex-col justify-between p-6 hover:brightness-110`}
-            style={{backgroundColor: active === index ? '#1f1f1f' : '#111',}}>
-            <div>
-              <div className="mb-4 text-5xl">{feature.emoji}</div>
-              <h3 className="mb-2 text-2xl font-semibold">{feature.title}</h3>
-              {active === index && (
-                <p className="mb-4 text-gray-400">{feature.description}</p>
-              )}
-            </div>
-            {active === index && (
-              <a
-                href={feature.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-4 py-2 text-white transition-all border border-white rounded hover:bg-white hover:text-black"
-              >
+        <div className="flex flex-col gap-6">
+          {features.map((feature) => (
+            <div key={feature.title} className="box">
+              <h3 className="mb-2 text-xl">
+                {feature.emoji} {feature.title}
+              </h3>
+              <p className="mb-4">{feature.description}</p>
+              <a href={feature.link} target="_blank" rel="noopener noreferrer" className="btn">
                 View on GitHub →
               </a>
-            )}
-          </div>
-        ))}
-      </div>
-      <div className="flex justify-center gap-8 mt-8">
-        <button onClick={prev} className="px-4 py-2 transition-all border border-white rounded hover:bg-white hover:text-black">
-          ← Previous
-        </button>
-        <button onClick={next} className="px-4 py-2 transition-all border border-white rounded hover:bg-white hover:text-black">
-          Next →
-        </button>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

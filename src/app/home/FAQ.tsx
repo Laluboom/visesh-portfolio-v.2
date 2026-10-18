@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-
 const faqs = [
   {
     question: "What technologies do you work with?",
@@ -25,37 +21,19 @@ const faqs = [
 ];
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
-    <section id="faq" className="min-h-screen px-6 py-16 text-white bg-black">
-      <h2 className="mb-12 text-4xl font-bold text-center">❓ FAQ</h2>
+    <section id="faq" className="px-4 py-16">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="mb-8 text-3xl">FAQ</h2>
 
-      <div className="max-w-3xl mx-auto space-y-6">
-        {faqs.map((item, index) => (
-          <div
-            key={index}
-            className="border border-white/10 rounded-xl transition-all duration-300 bg-[#111] hover:border-white/20"
-          >
-            <button
-              onClick={() => toggle(index)}
-              className="flex items-center justify-between w-full px-6 py-4 text-lg font-medium text-left transition-colors hover:text-white"
-            >
-              <span>{item.question}</span>
-              <span className="text-xl">{openIndex === index ? '−' : '+'}</span>
-            </button>
-
-            {openIndex === index && (
-              <div className="px-6 pb-4 text-base text-gray-400 transition-all duration-300">
-                {item.answer}
-              </div>
-            )}
-          </div>
-        ))}
+        <div className="flex flex-col gap-4">
+          {faqs.map((item) => (
+            <details key={item.question} className="box">
+              <summary className="font-bold">{item.question}</summary>
+              <p className="mt-4">{item.answer}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   );

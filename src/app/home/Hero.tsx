@@ -1,23 +1,25 @@
 export default function Hero() {
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen px-4 text-center text-white bg-black">
-      <h1 className="mb-6 text-4xl font-bold leading-tight sm:text-6xl">
-        Hi, I'm <span className="text-gradient">Visesh</span>
-      </h1>
-      <p className="max-w-2xl mb-10 text-lg text-gray-300 sm:text-xl">
-        I build full-stack apps, ML fundamentals from scratch, and automation systems — this is where that work lives.
-      </p>
+    <section className="px-4 py-16 border-b-2 border-black">
+      <div className="max-w-3xl mx-auto">
+        <p className="mb-2">Hi, I'm</p>
+        <h1 className="mb-6 text-5xl sm:text-6xl">Visesh Akbari</h1>
+        <p className="mb-8 text-lg">
+          I build full-stack apps, ML fundamentals from scratch, and automation
+          systems — this is where that work lives.
+        </p>
 
-      <div className="flex flex-col gap-4 sm:flex-row">
-        <a href="/projects" className="px-6 py-3 text-white transition-all duration-300 border border-white rounded-lg hover:bg-white hover:text-black">
-          View Projects
-        </a>
-        <a href="/contact" className="px-6 py-3 text-black transition-all duration-300 bg-white rounded-lg hover:bg-gray-200">
-          Contact Me
-        </a>
-        <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="px-6 py-3 text-white transition-all duration-300 border border-white/40 rounded-lg hover:border-white">
-          Resume
-        </a>
+        <div className="flex flex-wrap gap-3">
+          <a href="/projects" className="btn">
+            View Projects
+          </a>
+          <a href="/contact" className="btn">
+            Contact Me
+          </a>
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn">
+            Resume
+          </a>
+        </div>
       </div>
     </section>
   );

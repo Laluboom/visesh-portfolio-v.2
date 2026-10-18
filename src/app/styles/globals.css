@@ -1,33 +1,145 @@
 @import "tailwindcss";
 
-/* Theme Customization (optional) */
-@theme {
-  --font-sans: system-ui, sans-serif;
-  --color-bg: #ffffff;
-  --color-text: #000000;
+/*
+  Design system: plain-HTML / brutalist. White page, black borders,
+  no radius, no shadow, no blur, no gradients, no scale transforms.
+  Serif for body copy (reads like unstyled HTML), monospace for
+  headings/nav/buttons/code (reads like markup).
+*/
+:root {
+  --bg: #ffffff;
+  --fg: #000000;
+  --muted: #444444;
+  --border: #000000;
+  --link: #0000ee;
+  --link-visited: #551a8b;
+  --highlight: #ffe600;
+  --serif: Georgia, "Times New Roman", Times, serif;
+  --mono: "Courier New", Courier, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  @theme {
-    --color-bg: #000000;
-    --color-text: #ffffff;
+/*
+  Everything below lives in Tailwind's base/components layers, which Tailwind
+  v4 always ranks BELOW the utilities layer in the cascade — so a utility
+  class like `sm:hidden` on an element always wins over `.btn`'s `display`,
+  regardless of source order or equal specificity. Do not move these rules
+  back out to plain unlayered CSS (that was a real bug here once: unlayered
+  `.btn { display: inline-block }` silently beat `.sm:hidden` and left a
+  "Menu" button visible on desktop).
+*/
+@layer base {
+  * {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  html,
+  body {
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  body {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  nav,
+  button,
+  .mono {
+    font-family: var(--mono);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 700;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  p {
+    max-width: 68ch;
+  }
+
+  a {
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  a:visited {
+    color: var(--link-visited);
+  }
+
+  a:hover {
+    background: var(--highlight);
+  }
+
+  hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  button {
+    font-family: var(--mono);
+    background: #e8e8e8;
+    color: var(--fg);
+    border: 2px solid var(--border);
+    padding: 0.55em 1.1em;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  code,
+  pre {
+    font-family: var(--mono);
+    background: #efefef;
+    border: 1px solid var(--border);
+    padding: 0.1em 0.4em;
+  }
+
+  summary {
+    cursor: pointer;
   }
 }
 
-.dark {
-  --color-bg: #000000;
-  --color-text: #ffffff;
+@layer components {
+  .btn {
+    font-family: var(--mono);
+    background: #e8e8e8;
+    color: var(--fg);
+    border: 2px solid var(--border);
+    padding: 0.55em 1.1em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn:hover {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  .box {
+    border: 2px solid var(--border);
+    padding: 1.25rem;
+  }
 }
 
-body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.text-gradient {
-  background: linear-gradient(to right, #ccc, #fff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* checkbox-driven mobile nav, no JS */
+#nav-toggle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }

@@ -1,13 +1,13 @@
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen px-6 py-16 text-white bg-black">
+    <main className="min-h-screen px-6 py-16">
       <section className="max-w-3xl mx-auto space-y-8">
         <div>
-          <h1 className="mb-2 text-4xl font-bold">Privacy Policy — Laluboom Foreman</h1>
-          <p className="text-sm text-gray-500">Last updated: 2026-10-18</p>
+          <h1 className="mb-2 text-4xl">Privacy Policy — Laluboom Foreman</h1>
+          <p className="text-sm">Last updated: 2026-10-18</p>
         </div>
 
-        <p className="text-gray-300">
+        <p>
           Laluboom Foreman (&quot;Foreman&quot;) is a personal automation tool built,
           operated, and used exclusively by its developer, Visesh Akbari. It has no
           other users, no customers, and no public sign-up. This policy describes how
@@ -16,20 +16,22 @@ export default function PrivacyPage() {
           framework.
         </p>
 
-        <div className="p-6 bg-[#111] rounded-xl border border-white/10">
-          <h2 className="mb-3 text-xl font-semibold">What data Foreman accesses</h2>
-          <p className="mb-3 text-gray-400">
+        <hr />
+
+        <div className="box">
+          <h2 className="mb-3 text-xl">What data Foreman accesses</h2>
+          <p className="mb-3">
             Foreman connects to a small, fixed set of Google accounts that the
             developer personally owns and controls. Specifically, it accesses:
           </p>
-          <ul className="pl-5 space-y-2 text-gray-400 list-disc">
+          <ul className="pl-5 space-y-2 list-disc">
             <li>
-              <strong className="text-gray-300">Gmail (read-only):</strong> message
+              <strong>Gmail (read-only):</strong> message
               metadata, subject lines, and short snippets of recent inbox messages, in
               order to identify mail worth a human&apos;s attention.
             </li>
             <li>
-              <strong className="text-gray-300">
+              <strong>
                 Google Calendar (read, and create/update/delete of events):
               </strong>{' '}
               upcoming event details (title, time, location, description), in order to
@@ -37,15 +39,15 @@ export default function PrivacyPage() {
               events through the tool.
             </li>
           </ul>
-          <p className="mt-3 text-gray-400">
+          <p className="mt-3">
             Foreman never reads, sends, or deletes email, and never modifies Gmail
             labels or settings.
           </p>
         </div>
 
-        <div className="p-6 bg-[#111] rounded-xl border border-white/10">
-          <h2 className="mb-3 text-xl font-semibold">How this data is used</h2>
-          <p className="text-gray-400">
+        <div className="box">
+          <h2 className="mb-3 text-xl">How this data is used</h2>
+          <p>
             Data is used solely to generate the developer&apos;s own personal
             reminders and summaries — for example, a notification that a new email
             looks worth reading, or a reminder that a calendar event is starting soon.
@@ -55,9 +57,9 @@ export default function PrivacyPage() {
           </p>
         </div>
 
-        <div className="p-6 bg-[#111] rounded-xl border border-white/10">
-          <h2 className="mb-3 text-xl font-semibold">Data sharing</h2>
-          <p className="text-gray-400">
+        <div className="box">
+          <h2 className="mb-3 text-xl">Data sharing</h2>
+          <p>
             Foreman does not share, sell, transfer, or otherwise disclose Google user
             data to any third party. Data is not used for advertising or marketing, is
             not sold or passed to data brokers, is not used to train or improve any AI
@@ -68,18 +70,18 @@ export default function PrivacyPage() {
           </p>
         </div>
 
-        <div className="p-6 bg-[#111] rounded-xl border border-white/10">
-          <h2 className="mb-3 text-xl font-semibold">
+        <div className="box">
+          <h2 className="mb-3 text-xl">
             Data storage, retention, and security
           </h2>
-          <p className="mb-3 text-gray-400">
+          <p className="mb-3">
             Foreman runs entirely on infrastructure the developer personally owns and
             operates. OAuth credentials are stored locally in a permissions-restricted
             configuration file on that infrastructure and are never transmitted
             anywhere except directly to Google&apos;s own token endpoint to
             authenticate API calls.
           </p>
-          <p className="text-gray-400">
+          <p>
             Foreman stores, locally only, the minimum state needed to avoid duplicate
             notifications: internal message and event identifiers already seen. It
             does not permanently store email or calendar content itself. Stored
@@ -88,16 +90,15 @@ export default function PrivacyPage() {
           </p>
         </div>
 
-        <div className="p-6 bg-[#111] rounded-xl border border-white/10">
-          <h2 className="mb-3 text-xl font-semibold">Revoking access</h2>
-          <p className="text-gray-400">
+        <div className="box">
+          <h2 className="mb-3 text-xl">Revoking access</h2>
+          <p>
             Because this application has only one user — its own developer — he can
             revoke its access at any time via his Google Account&apos;s{' '}
             <a
               href="https://myaccount.google.com/permissions"
               target="_blank"
               rel="noreferrer"
-              className="underline text-white hover:text-gray-300"
             >
               Security &gt; Third-party access
             </a>{' '}
@@ -105,18 +106,17 @@ export default function PrivacyPage() {
           </p>
         </div>
 
-        <p className="text-sm text-gray-500">
+        <hr />
+
+        <p className="text-sm">
           This policy may be updated if the application&apos;s data access or use
           changes. The &quot;Last updated&quot; date above reflects the most recent
           revision.
         </p>
 
-        <p className="text-sm text-gray-500">
+        <p className="text-sm">
           Developer contact:{' '}
-          <a
-            href="mailto:viseshakbari2005@gmail.com"
-            className="underline hover:text-gray-300"
-          >
+          <a href="mailto:viseshakbari2005@gmail.com">
             viseshakbari2005@gmail.com
           </a>
         </p>

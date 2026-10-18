@@ -1,16 +1,18 @@
 export default function LaluPiPage() {
   return (
-    <main className="min-h-screen px-6 py-16 text-white bg-black">
+    <main className="min-h-screen px-6 py-16">
       <section className="max-w-3xl mx-auto">
-        <h1 className="mb-2 text-4xl font-bold">🤖 LaluPi</h1>
-        <p className="mb-10 text-gray-400">
+        <h1 className="mb-2 text-4xl">🤖 LaluPi</h1>
+        <p className="mb-10">
           A Discord-driven multi-agent automation system that runs my own
           corner of the internet — email, calendar, PR review, and more —
           with every write action gated behind a 👍 Discord reaction before
           it&apos;s allowed to run.
         </p>
 
-        <div className="space-y-6 text-gray-300">
+        <hr />
+
+        <div className="space-y-6">
           <p>
             Foreman is the core of it: a set of small, single-purpose Python
             agents (a briefer, a doer, a validator, a PR watch, a login
@@ -25,36 +27,36 @@ export default function LaluPiPage() {
 
           {/* TODO(visesh): add a real screenshot of Foreman's Discord output here */}
 
-          <div className="p-6 bg-[#111] rounded-xl border border-white/10">
-            <h2 className="mb-3 text-xl font-semibold">
+          <div className="box">
+            <h2 className="mb-3 text-xl">
               What each agent actually does
             </h2>
-            <ul className="pl-5 space-y-3 text-gray-400 list-disc">
+            <ul className="pl-5 space-y-3 list-disc">
               <li>
-                <strong className="text-gray-200">Briefer</strong> — runs
+                <strong>Briefer</strong> — runs
                 daily at 07:30 and proposes a ranked list of tasks in
                 Discord. It doesn&apos;t touch anything itself; it just makes
                 the case for what&apos;s worth doing next.
               </li>
               <li>
-                <strong className="text-gray-200">Doer</strong> — implements
+                <strong>Doer</strong> — implements
                 exactly one task per run, and only after it&apos;s cleared
                 the gate: a 👍 Discord reaction from me on the briefer&apos;s
                 proposal. No reaction, no code gets touched.
               </li>
               <li>
-                <strong className="text-gray-200">Validator</strong> — every
+                <strong>Validator</strong> — every
                 3 days, audits the health of Foreman itself — the system,
                 not the project code it manages — and posts the result to a
                 dedicated #system-health Discord channel.
               </li>
               <li>
-                <strong className="text-gray-200">PR watch</strong> — runs
+                <strong>PR watch</strong> — runs
                 nightly, fully mechanical, no model calls involved. It just
                 counts open PRs and flags when the backlog is growing.
               </li>
               <li>
-                <strong className="text-gray-200">Login watchdog</strong> —
+                <strong>Login watchdog</strong> —
                 checks auth health across all 5 providers every 30 minutes.
                 Alerting is edge-triggered: it only fires on a
                 healthy-to-broken transition, not on every failed check, so
@@ -62,7 +64,7 @@ export default function LaluPiPage() {
                 cannon.
               </li>
             </ul>
-            <p className="mt-4 text-gray-400">
+            <p className="mt-4">
               Two more pieces hold the rest of it together: an escalation
               circuit-breaker that refuses to retry a task after 3
               consecutive failures on it — burning budget retrying a broken
@@ -88,7 +90,6 @@ export default function LaluPiPage() {
               href="https://stalklalu.com"
               target="_blank"
               rel="noreferrer"
-              className="underline text-white hover:text-gray-300"
             >
               stalklalu.com
             </a>{' '}
@@ -97,7 +98,6 @@ export default function LaluPiPage() {
               href="https://stalklalu.com/privacy"
               target="_blank"
               rel="noreferrer"
-              className="underline text-white hover:text-gray-300"
             >
               privacy policy
             </a>{' '}
@@ -117,7 +117,7 @@ export default function LaluPiPage() {
 
           <p>
             The repo backing all of this,{' '}
-            <strong className="text-gray-200">Laluboom/agent-system</strong>,
+            <strong>Laluboom/agent-system</strong>,
             is private — it touches personal credentials and home-server
             infrastructure directly, so it stays off the public internet
             rather than becoming a liability.
