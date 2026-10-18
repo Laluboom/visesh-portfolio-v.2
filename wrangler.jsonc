@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "visesh-portfolio-v2",
+  "name": "stalklalu",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-10-18",
   "compatibility_flags": ["nodejs_compat"],
