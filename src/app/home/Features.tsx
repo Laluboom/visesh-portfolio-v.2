@@ -4,34 +4,39 @@ import { useState } from 'react';
 
 const features = [
   {
-    title: 'Trial 1',
-    description: 'Explore scalable apps and APIs I’ve built using modern web tech.',
-    link: '/projects',
-    emoji: '🧩',
+    title: 'map_scraper_systems',
+    description:
+      'A full-stack scraping app with a separate backend and frontend, containerized with Docker and wired up with CI.',
+    link: 'https://github.com/Laluboom/map_scraper_systems',
+    emoji: '🗺️',
   },
   {
-    title: 'Trial 2',
-    description: 'Pixel-perfect components and animations built for real users.',
-    link: '/#designs',
-    emoji: '🎨',
+    title: 'ml-from-scratch',
+    description:
+      'ML fundamentals implemented from the ground up in both Python and C++, built over about 10 months.',
+    link: 'https://github.com/Laluboom/ml-from-scratch',
+    emoji: '🧮',
   },
   {
-    title: 'Trial 3',
-    description: 'Projects I’ve built while working with other developers.',
-    link: '/#collabs',
-    emoji: '🤝',
+    title: 'pretty_fly_analytics',
+    description:
+      'A data/ML analytics project with a written PRD and a neural-net component for the prediction side.',
+    link: 'https://github.com/Laluboom/pretty_fly_analytics',
+    emoji: '📊',
   },
   {
-    title: 'Trial 4',
-    description: 'Projects I’ve built while working with other developers.',
-    link: '/#collabs',
-    emoji: '🤝',
+    title: 'game_theory',
+    description:
+      'An Axelrod-style iterated prisoner’s dilemma tournament for comparing strategies head-to-head.',
+    link: 'https://github.com/Laluboom/game_theory',
+    emoji: '♟️',
   },
   {
-    title: 'Trial 5',
-    description: 'Projects I’ve built while working with other developers.',
-    link: '/#collabs',
-    emoji: '🤝',
+    title: 'BudgetSorter',
+    description:
+      'Receipt OCR paired with bank statement analysis to reconcile spending automatically.',
+    link: 'https://github.com/Laluboom/BudgetSorter',
+    emoji: '🧾',
   },
 ];
 
@@ -44,7 +49,7 @@ export default function Features() {
 
   return (
     <section id="features" className="min-h-screen px-4 py-12 overflow-hidden text-white bg-black">
-      <h2 className="mb-12 text-4xl font-bold text-center">✨ Features</h2>
+      <h2 className="mb-12 text-4xl font-bold text-center">Projects</h2>
 
       <div className="flex items-center justify-center gap-4 overflow-x-auto">
         {features.map((feature, index) => (
@@ -61,8 +66,13 @@ export default function Features() {
               )}
             </div>
             {active === index && (
-              <a href={feature.link} className="inline-block px-4 py-2 text-white transition-all border border-white rounded hover:bg-white hover:text-black">
-                Visit →
+              <a
+                href={feature.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-4 py-2 text-white transition-all border border-white rounded hover:bg-white hover:text-black"
+              >
+                View on GitHub →
               </a>
             )}
           </div>

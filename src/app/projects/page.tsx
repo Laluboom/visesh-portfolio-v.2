@@ -4,44 +4,25 @@ const projects = [
   {
     type: 'game',
     title: 'Suika Game (WIP)',
-    description: 'Fruit fusion puzzle game – base version.',
+    description:
+      'Fruit-fusion puzzle game. Known bug: fruit dropped straight down lands exactly minDist apart, so the merge check never fires — merging doesn\'t work yet. See todo.md.',
     emoji: '🍉',
     link: '/projects/DevilSuika',
   },
   {
-    type: 'game',
-    title: '2048 Remix',
-    description: 'My custom twist on the 2048 puzzle game.',
-    emoji: '🧠',
-    link: '/projects/2048Game',
-  },
-  {
     type: 'model',
     title: 'Arcade Room',
-    description: 'Explore my 3D-modeled arcade machine using WebGL.',
+    description:
+      'Explore my 3D-modeled arcade machine using WebGL. Known issue: the lighting HDRI loads from a remote CDN with no error fallback, so the canvas can come up blank/black on load — that\'s a known bug, not your browser. See reference.md.',
     emoji: '🕹️',
     link: '/projects/arcaderoom'
   },
   {
     type: 'blog',
     title: 'LaluPi',
-    description: 'A Discord-driven multi-agent automation system running my own email, calendar, and PR review.',
+    description: 'Five Discord-gated agents and 565+ tests keeping my email, calendar, and PRs running on autopilot.',
     emoji: '🤖',
     link: '/projects/LaluPi',
-  },
-  {
-    type: 'blog',
-    title: 'How I Built My Portfolio',
-    description: 'A behind-the-scenes writeup of this very website.',
-    emoji: '✍️',
-    link: '/projects/how-i-built-my-portfolio',
-  },
-  {
-    type: 'blog',
-    title: 'JavaScript Mini Tools',
-    description: 'Tiny but powerful JS tools I’ve created.',
-    emoji: '🛠️',
-    link: '/projects/js-mini-tools',
   },
 ];
 
@@ -65,7 +46,7 @@ export default function ProjectsPage() {
 
               <div className="absolute text-sm text-gray-500 bottom-4 right-6 group-hover:text-white">
                 {project.type === 'game'
-                ? '🎮 Play Game →'
+                ? '🚧 Try it (known broken) →'
                 : project.type === 'model'
                 ? '🕹️ View Model →'
                 : '📝 Read Post →'}

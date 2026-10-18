@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 
+const EMAIL = 'viseshakbari2005@gmail.com';
+
 export default function ContactPage() {
   const [copied, setCopied] = useState(false);
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('you@example.com');
+    navigator.clipboard.writeText(EMAIL);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -14,61 +16,62 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen px-6 py-16 text-white bg-black">
       <section className="max-w-3xl mx-auto space-y-12 text-center">
-        <h1 className="text-4xl font-bold">📬 Let’s Get in Touch</h1>
+        <h1 className="text-4xl font-bold">Get in Touch</h1>
         <p className="text-lg text-gray-400">
-          Whether it’s a project, opportunity, or just a hello — I’d love to hear from you!
+          Email me directly, or check out my work on GitHub.
+          {/* TODO(visesh): add real availability/what you're open to, e.g. freelance, full-time, collab */}
         </p>
 
         {/* Contact Cards */}
-        <div className="grid gap-6 text-left sm:grid-cols-2">
-          <button
-            onClick={handleCopyEmail}
+        <div className="grid gap-6 text-left sm:grid-cols-3">
+          <a
+            href={`mailto:${EMAIL}`}
             className="p-6 bg-[#111] rounded-xl border border-white/10 hover:scale-105 transition-transform"
           >
             <div className="mb-2 text-3xl">✉️</div>
             <div className="mb-1 font-semibold">Email Me</div>
-            <div className="text-sm text-gray-400">
-              you@example.com
-              <span className="ml-2 text-green-400">
-                {copied && 'Copied!'}
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <span>{EMAIL}</span>
+              <span
+                role="button"
+                tabIndex={0}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleCopyEmail();
+                }}
+                className="text-gray-500 hover:text-white"
+                title="Copy email"
+              >
+                📋
               </span>
+              <span className="text-green-400">{copied && 'Copied!'}</span>
             </div>
-          </button>
+          </a>
 
           <a
-            href="https://github.com/yourusername"
+            href="https://github.com/Laluboom"
             target="_blank"
+            rel="noopener noreferrer"
             className="p-6 bg-[#111] rounded-xl border border-white/10 hover:scale-105 transition-transform"
           >
             <div className="mb-2 text-3xl">💻</div>
             <div className="mb-1 font-semibold">GitHub</div>
-            <div className="text-sm text-gray-400">/yourusername</div>
+            <div className="text-sm text-gray-400">github.com/Laluboom</div>
           </a>
 
           <a
-            href="https://linkedin.com/in/yourprofile"
-            target="_blank"
+            // TODO(visesh): add real LinkedIn URL
+            href="#"
             className="p-6 bg-[#111] rounded-xl border border-white/10 hover:scale-105 transition-transform"
           >
             <div className="mb-2 text-3xl">🔗</div>
             <div className="mb-1 font-semibold">LinkedIn</div>
-            <div className="text-sm text-gray-400">/yourprofile</div>
+            <div className="text-sm text-gray-400">
+              {/* TODO(visesh): add real LinkedIn URL */}
+              link coming soon
+            </div>
           </a>
-
-          <a
-            href="https://yourportfolio.com/#contact"
-            target="_blank"
-            className="p-6 bg-[#111] rounded-xl border border-white/10 hover:scale-105 transition-transform"
-          >
-            <div className="mb-2 text-3xl">🌐</div>
-            <div className="mb-1 font-semibold">Website</div>
-            <div className="text-sm text-gray-400">yourportfolio.com</div>
-          </a>
-        </div>
-
-        {/* Signature Note */}
-        <div className="mt-16 text-sm text-gray-500">
-          Built with ❤️ by V
         </div>
       </section>
     </main>

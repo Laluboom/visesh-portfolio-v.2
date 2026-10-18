@@ -5,19 +5,22 @@ import { useState } from 'react';
 const faqs = [
   {
     question: "What technologies do you work with?",
-    answer: "I work primarily with JavaScript, TypeScript, React, Next.js, Tailwind CSS, and Python for backend and data projects.",
+    answer:
+      "Across my real projects: Python and C++ (ml-from-scratch), JavaScript/TypeScript with Docker and CI (map_scraper_systems), data and ML tooling including a neural-net component (pretty_fly_analytics), plus Arduino (Line-Following-Robot) and Minecraft Bedrock addon development (Scythe-add-on_minecraft-mod).",
   },
   {
     question: "Are you open to freelance or collaboration?",
-    answer: "Absolutely! I enjoy building with others. You can reach out via the Contact page for freelance or collab inquiries.",
+    // TODO(visesh): confirm real current availability/timeline before shipping — the line below is a placeholder, not a commitment.
+    answer:
+      "Reach out via the Contact page with what you have in mind and I'll let you know if the timing works.",
   },
   {
     question: "Can I see your past work or code?",
-    answer: "Yes! Check out my Projects page where I showcase my selected work along with GitHub links where available.",
+    answer: "Yes — check out my Projects page, or browse the repos directly at github.com/Laluboom.",
   },
   {
     question: "Do you do design as well?",
-    answer: "Yes, I enjoy UI/UX design and often build interfaces from scratch using tools like Figma and Tailwind CSS.",
+    answer: "My focus is more on the engineering side — full-stack apps, ML fundamentals, and automation systems — rather than visual/UI design.",
   },
 ];
 

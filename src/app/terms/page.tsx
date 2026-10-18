@@ -8,11 +8,23 @@ export default function TermsPage() {
         </div>
 
         <p className="text-gray-300">
-          This site (stalklalu.com) is Visesh Akbari&apos;s personal portfolio, and
-          also serves as the home page and privacy policy reference for{' '}
+          This page sets out terms for two separate things under one roof: this
+          portfolio site, which is Visesh Akbari&apos;s personal portfolio, and{' '}
           <strong className="text-gray-200">Laluboom Foreman</strong>, a personal
-          automation tool he built and operates for his own private use. These terms
-          cover both.
+          automation tool he built and operates for his own private use.
+          Foreman&apos;s OAuth-compliance home page — the small, separate site
+          Google&apos;s consent screen checks for domain ownership — lives at{' '}
+          <a
+            href="https://stalklalu.com"
+            target="_blank"
+            rel="noreferrer"
+            className="underline text-white hover:text-gray-300"
+          >
+            stalklalu.com
+          </a>
+          , not here. This portfolio is deployed on its own domain, separate
+          from stalklalu.com and still being finalized. These terms cover both
+          the portfolio and Foreman.
         </p>
 
         <div className="p-6 bg-[#111] rounded-xl border border-white/10">

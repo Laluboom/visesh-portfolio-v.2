@@ -1,9 +1,10 @@
 import './styles/globals.css';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 export const metadata = {
-  title: 'My App',
-  description: 'Next.js with TailwindCSS and navbar',
+  title: 'Visesh Akbari',
+  description: 'Portfolio of Visesh Akbari — full-stack apps, ML fundamentals, and automation systems.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -12,6 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="text-gray-800 bg-white">
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
