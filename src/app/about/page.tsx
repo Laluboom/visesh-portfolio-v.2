@@ -6,7 +6,14 @@ export default function AboutPage() {
         <div className="pb-8">
           <h1 className="mb-2 text-4xl">About Me</h1>
           <p className="max-w-xl text-lg">
-            I'm Lalu Boom. Here's what I've actually built and how I work.
+            I&apos;m Lalu Boom. Here&apos;s what I&apos;ve actually built and
+            how I work.
+          </p>
+          <p className="mt-4">
+            I started by dropping out of mechanical engineering. I was building
+            a calculator for the command line in Python at the time, using
+            ChatGPT to get through it. I study math and data science at City
+            University now.
           </p>
         </div>
 
@@ -15,8 +22,8 @@ export default function AboutPage() {
           <div className="box">
             <h2 className="mb-2 text-2xl">My Background</h2>
             <p>
-              I'm a math student and I'd rather build things end-to-end than just read about
-              how they work. That's a full-stack scraping app with Docker and CI (
+              I study math and data science, and I&apos;d rather build things end-to-end
+              than just read about how they work. That's a full-stack scraping app with Docker and CI (
               <a
                 href="https://github.com/Laluboom/map_scraper_systems"
                 target="_blank"
@@ -47,7 +54,7 @@ export default function AboutPage() {
           </div>
 
           <div className="box">
-            <h2 className="mb-2 text-2xl">Philosophy</h2>
+            <h2 className="mb-2 text-2xl">Foreman, and what it taught me</h2>
             <p>
               The project I'd point to is Foreman. It's a Discord-driven multi-agent
               automation system I built with 565+ tests, a four-tier LLM provider cascade,
@@ -57,6 +64,41 @@ export default function AboutPage() {
               because the tests and the circuit breaker only exist because autonomous systems
               fail in ways you don't see coming. Read more on the{' '}
               <a href="/projects/LaluPi">Foreman project page</a>.
+            </p>
+          </div>
+        </div>
+
+        {/* What I'm good at / not good at */}
+        <div className="grid items-start gap-8 md:grid-cols-2">
+          <div className="box">
+            <h2 className="mb-2 text-2xl">What I&apos;m good at</h2>
+            <p className="mb-4">
+              Getting a first version running. The first version is always bad.
+              That part is normal and it isn&apos;t the problem.
+            </p>
+            <p className="mb-4">
+              Saying so. I can read my own code two months later and admit
+              it&apos;s bad instead of defending it. Not admitting it is how
+              bad code stays bad.
+            </p>
+            <p>
+              Staying with something until I understand it. When something on
+              screen looks wrong, I&apos;ll sit with it for an hour until I see
+              why, and usually that is what it takes.
+            </p>
+          </div>
+
+          <div className="box">
+            <h2 className="mb-2 text-2xl">What I&apos;m not good at</h2>
+            <p className="mb-4">
+              Finishing. I have a folder of projects that are eighty percent
+              done and will stay that way, and the honest reason is that the
+              interesting problem was solved at sixty percent and I lost
+              interest at seventy-five.
+            </p>
+            <p>
+              Estimating. Ask me how long something will take and double it.
+              Then double it again if it touches a build tool.
             </p>
           </div>
         </div>

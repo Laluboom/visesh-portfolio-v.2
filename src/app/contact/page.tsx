@@ -1,4 +1,4 @@
-const EMAIL = 'viseshakbari@gmail.com';
+const EMAIL = 'viseshakbari2005@gmail.com';
 
 export default function ContactPage() {
   return (

@@ -114,7 +114,7 @@ useEffect(() => {
     requestAnimationFrame(draw);
   };
 
-  draw(lastTime); // 🔁 Start loop
+  draw(lastTime); // Start loop
 
   return () => {
     window.removeEventListener('resize', resizeCanvas);

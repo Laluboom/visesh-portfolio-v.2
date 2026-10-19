@@ -114,17 +114,18 @@
 @layer components {
   .btn {
     font-family: var(--mono);
-    background: var(--surface);
-    color: var(--fg);
-    padding: 0.55em 1.1em;
+    background: transparent;
+    color: var(--link);
+    padding: 0.55em 0;
     cursor: pointer;
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
     display: inline-block;
   }
 
   .btn:hover {
-    background: var(--fg);
-    color: var(--bg);
+    background: var(--highlight);
+    color: var(--link);
   }
 
   .box {

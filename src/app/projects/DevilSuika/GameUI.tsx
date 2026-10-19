@@ -11,12 +11,12 @@ export default function GameUI() {
         onClick={handleDrop}
         className="btn"
       >
-        Drop Fruit 🍏
+        Drop Fruit
       </button>
       <button
         className="btn"
       >
-        Reset 🔁
+        Reset
       </button>
     </div>
   );
