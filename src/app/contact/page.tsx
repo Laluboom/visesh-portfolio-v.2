@@ -7,7 +7,7 @@ export default function ContactPage() {
         <div className="pb-8">
           <h1 className="text-4xl">Get in Touch</h1>
           <p className="text-lg">
-            Email me directly, or check out my work on GitHub.
+            Email me directly, maybe I'll reply, or check out my work on GitHub and star it, or connect with me on linkedIn #followforfollow:).
             {/* TODO(lalu): add real availability/what you're open to, e.g. freelance, full-time, collab */}
           </p>
         </div>

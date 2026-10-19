@@ -4,7 +4,7 @@ import NotesSheet from './components/NotesSheet';
 
 export const metadata = {
   title: 'Lalu Boom',
-  description: "Lalu Boom's portfolio. A pile of real projects, mostly code.",
+  description: "Lalu Boom's portfolio. A pile of real projects, mostly code and sarcasm.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

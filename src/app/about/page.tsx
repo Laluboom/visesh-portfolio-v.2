@@ -6,14 +6,15 @@ export default function AboutPage() {
         <div className="pb-8">
           <h1 className="mb-2 text-4xl">About Me</h1>
           <p className="max-w-xl text-lg">
-            I&apos;m Lalu Boom. Here&apos;s what I&apos;ve actually built and
-            how I work.
+            I&apos;m Lalu Boom. Here&apos;s why I am, what I&apos;ve actually 
+            built and how I work.
           </p>
           <p className="mt-4">
-            I started by dropping out of mechanical engineering. I was building
-            a calculator for the command line in Python at the time, using
-            ChatGPT to get through it. I study math and data science at City
-            University now.
+            Existed in upper quartile of scholastic ranking cause smart parents(exposition)
+            Wasted a year on mechanical engineering cause bad priority (conflict)
+            Built a CLI physics calculator using chatgpt cause lazy (Rising Action)
+            Studied Math and Data Science and made softwares cause money. (Falling Action)
+            Idk yet, obviously (Resolution)
           </p>
         </div>
 
@@ -22,8 +23,8 @@ export default function AboutPage() {
           <div className="box">
             <h2 className="mb-2 text-2xl">My Background</h2>
             <p>
-              I study math and data science, and I&apos;d rather build things end-to-end
-              than just read about how they work. That's a full-stack scraping app with Docker and CI (
+              I study math and data science, and I&apos;d rather build broken things
+              than just read about how they work for now. That's a full-stack scraping app with Docker and CI, (doesn't work)(
               <a
                 href="https://github.com/Laluboom/map_scraper_systems"
                 target="_blank"
@@ -31,7 +32,7 @@ export default function AboutPage() {
               >
                 map_scraper_systems
               </a>
-              ), a receipt-OCR and bank-statement tool (
+              ), a receipt-OCR and bank-statement tool (I haven't used it yet)(
               <a
                 href="https://github.com/Laluboom/BudgetSorter"
                 target="_blank"
@@ -40,7 +41,7 @@ export default function AboutPage() {
                 BudgetSorter
               </a>
               ), and smaller stuff like an Arduino line-following robot and a Minecraft mod.
-              I spent about 10 months grinding through{' '}
+              I spent about 10 months grinding through why I can't tell you{' '}
               <a
                 href="https://github.com/Laluboom/ml-from-scratch"
                 target="_blank"
@@ -48,21 +49,25 @@ export default function AboutPage() {
               >
                 ml-from-scratch
               </a>
-              , building machine learning fundamentals in both Python and C++ instead of just
-              importing a library. It's still the project that taught me the most.
+              , building machine learning fundamentals in both Python and C++ of hundreds of lines instead of just
+              importing a library in one line. cause recruiters like that(I think).
             </p>
           </div>
-
           <div className="box">
             <h2 className="mb-2 text-2xl">Foreman, and what it taught me</h2>
             <p>
-              The project I'd point to is Foreman. It's a Discord-driven multi-agent
-              automation system I built with 565+ tests, a four-tier LLM provider cascade,
-              systemd-based automation, and an escalation/circuit-breaker safety system.
-              Building something that's meant to run unattended changed how I think about
-              code. I care more about failure modes and recovery paths than the happy path,
-              because the tests and the circuit breaker only exist because autonomous systems
-              fail in ways you don't see coming. Read more on the{' '}
+              Started with OpenClaw, was all the rage and thought it'd be cool even though no use case yet
+              Then heard about hermes and thought it'd be even cooler. so I moved to that. Still no use case.
+              It sat rotting on my old laptop/server cause no use case. Deleted everything cause purging feels good.
+              Found some use cases 3 months later, but I realized don't need a whole harness for simple scripts(duh). 
+              Anyways, Here is the AI summary of my project description(its a little pretentious, forgive me):
+                The project I'd point to is Foreman. It's a Discord-driven multi-agent
+                automation system I built with 565+ tests, a four-tier LLM provider cascade,
+                systemd-based automation, and an escalation/circuit-breaker safety system.
+                Building something that's meant to run unattended changed how I think about
+                code. I care more about failure modes and recovery paths than the happy path,
+                because the tests and the circuit breaker only exist because autonomous systems
+                fail in ways you don't see coming. Read more on the{' '}
               <a href="/projects/LaluPi">Foreman project page</a>.
             </p>
           </div>
@@ -84,7 +89,7 @@ export default function AboutPage() {
             <p>
               Staying with something until I understand it. When something on
               screen looks wrong, I&apos;ll sit with it for an hour until I see
-              why, and usually that is what it takes.
+              why, and usually that is how long it takes. Ofcourse LLMs help
             </p>
           </div>
 
@@ -111,11 +116,11 @@ export default function AboutPage() {
               'Python',
               'JavaScript',
               'HTML/CSS',
-              'SolidWorks',
+              'Bash',
               'AutoCAD',
-              'Inventor',
-              'Raspberry Pi',
-              'Arduino',
+              'CI/CD',
+              'SQL',
+              'Math(really good)',
             ].map((skill) => (
               <span key={skill} className="pr-6 py-1 text-sm">
                 {skill}
@@ -126,7 +131,7 @@ export default function AboutPage() {
 
         {/* What I've Built */}
         <div className="box">
-          <h2 className="mb-4 text-2xl">A Few Other Things I've Built</h2>
+          <h2 className="mb-4 text-2xl">A Few Other Things I've been "passionate" about</h2>
           <ul className="grid gap-3 text-sm sm:grid-cols-2">
             <li>
               <a
@@ -136,7 +141,7 @@ export default function AboutPage() {
               >
                 pretty_fly_analytics
               </a>
-              : a data/ML analytics project built from a PRD, including a neural net.
+              : a data/ML analytics project built from a PRD, including a neural net. oooh so cool.
             </li>
             <li>
               <a
@@ -146,7 +151,7 @@ export default function AboutPage() {
               >
                 game_theory
               </a>
-              : an Axelrod-style iterated prisoner's dilemma tournament.
+              : an Axelrod-style iterated prisoner's dilemma tournament. Good guys win surprisingly.
             </li>
             <li>
               <a
@@ -156,7 +161,7 @@ export default function AboutPage() {
               >
                 3_Body_problem_Simulation
               </a>
-              : a Runge-Kutta integrator simulating the three-body problem.
+              : a Runge-Kutta integrator simulating the three-body problem. Didn't understand much, looks cool though.
             </li>
             <li>
               <a
@@ -166,11 +171,11 @@ export default function AboutPage() {
               >
                 Custom_Extensions
               </a>
-              : five browser extensions built from scratch.
+              : five browser extensions. Cause I'm lazy.
             </li>
           </ul>
           <p className="mt-4 text-sm">
-            More of this is on{' '}
+            More of like this? --&gt;{' '}
             <a href="https://github.com/Laluboom" target="_blank" rel="noopener noreferrer">
               github.com/Laluboom
             </a>

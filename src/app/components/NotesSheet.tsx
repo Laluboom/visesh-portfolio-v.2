@@ -14,10 +14,11 @@ import { useEffect, useRef, useState } from 'react';
 
 const ALREADY_NOTED = [
   'The Suika game does not merge anything.',
-  'The arcade room comes up black.',
+  'The arcade room is already too zoomed in',
+  'This Laluboom guy is very corny',
 ];
 
-const BLANK_LINES = 7;
+const BLANK_LINES = 8;
 
 type Line = { text: string; checked: boolean };
 
@@ -88,8 +89,8 @@ export default function NotesSheet() {
           >
             <h2 className="text-xl">Complaints</h2>
             <p className="mt-2 mb-4 text-sm">
-              The first two are already on the record. Add yours underneath.
-              This sends nowhere, which I am telling you up front.
+              The first three are already noted and on the record. Add yours underneath.
+              This sends nowhere, which I am obligted to tell you up front so I don't feel bad.
             </p>
 
             <div className="notes-pad">

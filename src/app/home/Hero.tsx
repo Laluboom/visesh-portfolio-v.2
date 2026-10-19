@@ -7,7 +7,7 @@ export default function Hero() {
         This site exists because I needed a domain to verify some cloud API requests.
       </p>
       <p className="mt-2 text-sm text-[color:var(--muted)]">
-        PS: might as well show off my other stuff while I'm at it.
+        PS: Try not to complaint too much, not that I'm listening
       </p>
     </section>
   );

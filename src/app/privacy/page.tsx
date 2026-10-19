@@ -13,7 +13,7 @@ export default function PrivacyPage() {
           other users, no customers, and no public sign-up. This policy describes how
           Foreman handles the developer&apos;s own Google account data, since it
           requests access to Gmail and Google Calendar under Google&apos;s OAuth
-          framework.
+          framework. It will always only have accounts developer is personally aware about, no public signup possible.
         </p>
 
         <hr />
