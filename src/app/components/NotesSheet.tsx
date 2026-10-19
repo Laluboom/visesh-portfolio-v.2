@@ -51,6 +51,9 @@ export default function NotesSheet() {
     return () => window.clearTimeout(t);
   }, [sent]);
 
+  // Nothing typed on any blank line means they had nothing to add.
+  const tattled = lines.some((line) => line.text.trim() !== '');
+
   const setLine = (i: number, patch: Partial<Line>) =>
     setLines((prev) =>
       prev.map((line, n) => (n === i ? { ...line, ...patch } : line))
@@ -140,7 +143,11 @@ export default function NotesSheet() {
 
             {sent && (
               <div className="notes-cheer" role="status">
-                <span>Congratulations, your tattles have been noted 🙏</span>
+                <span>
+                  {tattled
+                    ? 'Congratulations, your tattles have been noted 🙏'
+                    : 'Nothing to complain about? Have a cookie 🍪'}
+                </span>
               </div>
             )}
           </div>
