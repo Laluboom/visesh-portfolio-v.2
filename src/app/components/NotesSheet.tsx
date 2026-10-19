@@ -71,8 +71,10 @@ export default function NotesSheet() {
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center px-4 notes-backdrop"
-          onClick={() => setOpen(false)}
+          className={`fixed inset-0 z-50 flex items-center justify-center px-4 notes-backdrop${
+            sent ? ' notes-dismissing' : ''
+          }`}
+          onClick={() => !sent && setOpen(false)}
         >
           <div
             role="dialog"
