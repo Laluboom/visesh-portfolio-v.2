@@ -5,11 +5,10 @@
   no radius, no shadow, no blur, no gradients, no scale transforms.
   Serif for body copy (reads like unstyled HTML), monospace for
   headings/nav/buttons/code (reads like markup). Structure comes from
-  spacing and background shading alone, not ruled lines.
+  spacing alone: no ruled lines, no shading, no filled blocks.
 */
 :root {
   --bg: #ffffff;
-  --surface: #f2f2f2;
   --fg: #000000;
   --muted: #444444;
   --link: #0000ee;
@@ -88,22 +87,24 @@
 
   button {
     font-family: var(--mono);
-    background: var(--surface);
-    color: var(--fg);
-    padding: 0.55em 1.1em;
+    background: transparent;
+    color: var(--link);
+    padding: 0.55em 0;
     cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
   }
 
   button:hover {
-    background: var(--fg);
-    color: var(--bg);
+    background: var(--highlight);
+    color: var(--link);
   }
 
   code,
   pre {
     font-family: var(--mono);
-    background: var(--surface);
-    padding: 0.1em 0.4em;
+    background: transparent;
+    padding: 0;
   }
 
   summary {
@@ -129,8 +130,8 @@
   }
 
   .box {
-    background: var(--surface);
-    padding: 1.25rem;
+    background: transparent;
+    padding: 1.25rem 0;
   }
 }
 
