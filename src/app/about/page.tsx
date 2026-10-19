@@ -75,7 +75,7 @@ export default function AboutPage() {
               'Raspberry Pi',
               'Arduino',
             ].map((skill) => (
-              <span key={skill} className="px-4 py-2 text-sm bg-[color:var(--bg)]">
+              <span key={skill} className="px-4 py-2 text-sm bg-[color:var(--surface)]">
                 {skill}
               </span>
             ))}
