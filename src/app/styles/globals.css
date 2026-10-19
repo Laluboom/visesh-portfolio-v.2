@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 /*
-  Design system: plain-HTML / brutalist. White page, black borders,
+  Design system: plain-HTML / brutalist. White page, no borders,
   no radius, no shadow, no blur, no gradients, no scale transforms.
   Serif for body copy (reads like unstyled HTML), monospace for
-  headings/nav/buttons/code (reads like markup).
+  headings/nav/buttons/code (reads like markup). Structure comes from
+  spacing and background shading alone, not ruled lines.
 */
 :root {
   --bg: #ffffff;
   --fg: #000000;
   --muted: #444444;
-  --border: #000000;
   --link: #0000ee;
   --highlight: #ffe600;
   --serif: Georgia, "Times New Roman", Times, serif;
@@ -82,15 +82,13 @@
 
   hr {
     border: none;
-    border-top: 2px solid var(--border);
     margin: 2.5rem 0;
   }
 
   button {
     font-family: var(--mono);
-    background: #e8e8e8;
+    background: var(--bg);
     color: var(--fg);
-    border: 2px solid var(--border);
     padding: 0.55em 1.1em;
     cursor: pointer;
   }
@@ -103,8 +101,7 @@
   code,
   pre {
     font-family: var(--mono);
-    background: #efefef;
-    border: 1px solid var(--border);
+    background: var(--bg);
     padding: 0.1em 0.4em;
   }
 
@@ -116,9 +113,8 @@
 @layer components {
   .btn {
     font-family: var(--mono);
-    background: #e8e8e8;
+    background: var(--bg);
     color: var(--fg);
-    border: 2px solid var(--border);
     padding: 0.55em 1.1em;
     cursor: pointer;
     text-decoration: none;
@@ -131,7 +127,7 @@
   }
 
   .box {
-    border: 2px solid var(--border);
+    background: var(--bg);
     padding: 1.25rem;
   }
 }

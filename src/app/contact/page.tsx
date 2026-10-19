@@ -4,7 +4,7 @@ export default function ContactPage() {
   return (
     <main className="px-6 py-16">
       <section className="max-w-3xl mx-auto space-y-12">
-        <div className="pb-8 border-b-2 border-black">
+        <div className="pb-8">
           <h1 className="text-4xl">Get in Touch</h1>
           <p className="text-lg">
             Email me directly, or check out my work on GitHub.

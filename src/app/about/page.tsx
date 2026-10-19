@@ -3,7 +3,7 @@ export default function AboutPage() {
     <main className="px-6 py-16">
       <section className="max-w-5xl mx-auto space-y-12">
         {/* Header */}
-        <div className="pb-8 border-b-2 border-black">
+        <div className="pb-8">
           <h1 className="mb-2 text-4xl">About Me</h1>
           <p className="max-w-xl text-lg">
             I'm Lalu Boom. Here's what I've actually built and how I work.
@@ -75,7 +75,7 @@ export default function AboutPage() {
               'Raspberry Pi',
               'Arduino',
             ].map((skill) => (
-              <span key={skill} className="px-4 py-2 text-sm border-2 border-black">
+              <span key={skill} className="px-4 py-2 text-sm bg-[color:var(--bg)]">
                 {skill}
               </span>
             ))}

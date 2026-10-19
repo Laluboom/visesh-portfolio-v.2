@@ -124,7 +124,7 @@ useEffect(() => {
 
   return (
   <div className="flex items-center justify-center min-h-screen p-4 bg-black">
-    <canvas ref={canvasRef} className="w-[90vw] h-[90vh] max-w-[800px] max-h-[90vh] border-4 border-white rounded-lg shadow-lg"/>
+    <canvas ref={canvasRef} className="w-[90vw] h-[90vh] max-w-[800px] max-h-[90vh]"/>
   </div>
   );
 });

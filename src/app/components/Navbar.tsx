@@ -9,7 +9,7 @@ const links = [
 
 export default function Navbar() {
   return (
-    <nav className="border-b-2 border-black">
+    <nav>
       <input type="checkbox" id="nav-toggle" className="peer" />
 
       <div className="flex items-center justify-between px-4 py-3">
@@ -33,7 +33,7 @@ export default function Navbar() {
         </label>
       </div>
 
-      <div className="hidden flex-col gap-2 px-4 pb-4 border-t-2 border-black peer-checked:flex sm:hidden">
+      <div className="hidden flex-col gap-2 px-4 pb-4 peer-checked:flex sm:hidden">
         {links.map(({ href, label }) => (
           <Link key={label} href={href} className="pt-2">
             {label}
