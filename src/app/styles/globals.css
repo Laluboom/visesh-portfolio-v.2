@@ -157,17 +157,51 @@
   animation: notes-rise 320ms cubic-bezier(0.17, 0.84, 0.44, 1) both;
 }
 
+/* ruled paper: one line per row, the rule drawn under each row */
 .notes-pad {
-  /* ruled lines, so the thing reads as a pad rather than a text box */
-  background-image: repeating-linear-gradient(
+  font-family: var(--mono);
+  font-size: 0.85rem;
+}
+
+/*
+  The rule is painted as a background gradient, not a border or a shadow.
+  The base layer kills both of those globally with !important, and an
+  !important in a layer beats an !important outside one.
+*/
+.notes-line {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 2rem;
+  background-image: linear-gradient(
     to bottom,
-    transparent 0,
-    transparent 1.45rem,
-    rgba(0, 0, 0, 0.25) 1.45rem,
-    rgba(0, 0, 0, 0.25) calc(1.45rem + 1px)
+    transparent calc(100% - 1px),
+    rgba(0, 0, 0, 0.3) calc(100% - 1px)
   );
-  line-height: 1.45rem;
-  resize: vertical;
+}
+
+.notes-line-text {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: var(--fg);
+  padding: 0;
+}
+
+.notes-line-text:focus {
+  background: var(--highlight);
+}
+
+.notes-line-fixed {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.notes-line input[type='checkbox']:disabled {
+  opacity: 0.55;
 }
 
 .notes-cheer {

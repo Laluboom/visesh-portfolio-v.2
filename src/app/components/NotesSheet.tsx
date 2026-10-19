@@ -4,24 +4,29 @@ import { useEffect, useRef, useState } from 'react';
 
 /*
   A complaints pad. Opens from the bottom right corner into the middle of
-  the page, takes a list of grievances, and sends them precisely nowhere.
-  The send handler is deliberately a stub: there is no backend, and a form
-  that pretends to deliver is worse than one that admits it doesn't.
+  the page: ruled paper, a checkbox on every line. The first two lines are
+  already ticked and fixed, because the site has already admitted to those.
+  The rest are blank for whatever else you have.
+
+  Sending is a stub. There is no backend, and a form that pretends to
+  deliver is worse than one that admits it doesn't.
 */
 
-const COMPLAINTS = [
-  'Too much text and not enough pictures.',
+const ALREADY_NOTED = [
   'The Suika game does not merge anything.',
-  'The arcade room came up black.',
-  'Everything is black and white.',
-  'Nothing looks like a box any more.',
-  'I was promised a feature grid.',
+  'The arcade room comes up black.',
 ];
+
+const BLANK_LINES = 7;
+
+type Line = { text: string; checked: boolean };
+
+const emptyLines = (): Line[] =>
+  Array.from({ length: BLANK_LINES }, () => ({ text: '', checked: false }));
 
 export default function NotesSheet() {
   const [open, setOpen] = useState(false);
-  const [ticked, setTicked] = useState<string[]>([]);
-  const [note, setNote] = useState('');
+  const [lines, setLines] = useState<Line[]>(emptyLines);
   const [sent, setSent] = useState(false);
   const openerRef = useRef<HTMLButtonElement>(null);
 
@@ -40,16 +45,15 @@ export default function NotesSheet() {
     const t = window.setTimeout(() => {
       setSent(false);
       setOpen(false);
-      setTicked([]);
-      setNote('');
+      setLines(emptyLines());
       openerRef.current?.focus();
     }, 2600);
     return () => window.clearTimeout(t);
   }, [sent]);
 
-  const toggle = (item: string) =>
-    setTicked((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+  const setLine = (i: number, patch: Partial<Line>) =>
+    setLines((prev) =>
+      prev.map((line, n) => (n === i ? { ...line, ...patch } : line))
     );
 
   return (
@@ -78,37 +82,50 @@ export default function NotesSheet() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-xl">Complaints</h2>
-            <p className="mt-2 text-sm">
-              Tick what is wrong. Add anything I missed. This sends nowhere,
-              which I am telling you up front.
+            <p className="mt-2 mb-4 text-sm">
+              The first two are already on the record. Add yours underneath.
+              This sends nowhere, which I am telling you up front.
             </p>
 
-            <ul className="mt-5 space-y-2 text-sm">
-              {COMPLAINTS.map((item) => (
-                <li key={item}>
-                  <label className="flex gap-3 cursor-pointer items-baseline">
-                    <input
-                      type="checkbox"
-                      checked={ticked.includes(item)}
-                      onChange={() => toggle(item)}
-                    />
-                    <span>{item}</span>
-                  </label>
-                </li>
+            <div className="notes-pad">
+              {ALREADY_NOTED.map((item) => (
+                <div key={item} className="notes-line">
+                  <input
+                    type="checkbox"
+                    checked
+                    disabled
+                    readOnly
+                    aria-label={`Already noted: ${item}`}
+                  />
+                  <span className="notes-line-text notes-line-fixed">
+                    {item}
+                  </span>
+                </div>
               ))}
-            </ul>
 
-            <label htmlFor="other-complaint" className="block mt-5 text-sm">
-              Something else
-            </label>
-            <textarea
-              id="other-complaint"
-              rows={3}
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              className="w-full mt-1 p-2 text-sm bg-transparent notes-pad"
-              placeholder="Go on."
-            />
+              {lines.map((line, i) => (
+                <div key={i} className="notes-line">
+                  <input
+                    type="checkbox"
+                    checked={line.checked}
+                    onChange={(e) => setLine(i, { checked: e.target.checked })}
+                    aria-label={`Tick complaint ${i + 1}`}
+                  />
+                  <input
+                    type="text"
+                    value={line.text}
+                    onChange={(e) =>
+                      setLine(i, {
+                        text: e.target.value,
+                        checked: e.target.value ? true : line.checked,
+                      })
+                    }
+                    className="notes-line-text"
+                    aria-label={`Complaint ${i + 1}`}
+                  />
+                </div>
+              ))}
+            </div>
 
             <div className="flex justify-end gap-6 mt-5">
               <button type="button" onClick={() => setOpen(false)}>
