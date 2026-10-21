@@ -1,9 +1,10 @@
 import './styles/globals.css';
 import Navbar from './components/Navbar';
+import NotesSheet from './components/NotesSheet';
 
 export const metadata = {
   title: 'Lalu Boom',
-  description: "Lalu Boom's portfolio. A pile of real projects, mostly code.",
+  description: "Lalu Boom's portfolio. A pile of real projects, mostly code and sarcasm.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -12,6 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Navbar />
         {children}
+        <NotesSheet />
       </body>
     </html>
   );

@@ -1,29 +1,34 @@
 const features = [
   {
+    title: 'Visesh Portfolio Website',
+    description: "Words that make Lalu seem cool, version 2, voila!",
+    link: 'https://github.com/Laluboom/visesh-portfolio-v.2',
+  },
+  {
     title: 'map_scraper_systems',
-    description: 'Scrapes Google Maps for whatever format you need.',
+    description: 'Dysfunctional bloatware, but if it works, Scrapes Google Maps for whatever format you need.',
     link: 'https://github.com/Laluboom/map_scraper_systems',
   },
   {
     title: 'ml-from-scratch',
-    description: 'Wrote the math myself in Python and C++. Importing is stupid.',
+    description: 'Wrote the math myself for basic machine learning algorithms in Python and C++. Importing is stupid.',
     link: 'https://github.com/Laluboom/ml-from-scratch',
   },
   {
     title: 'pretty_fly_analytics',
     description:
-      'Built for the Wayflyer Visionaries Hackathon off a real spec, with a neural net doing the actual predicting.',
+      'Built for a hackathon off a real specs, with a neural net doing the actual predicting. Didn\'t win tho so probably not great',
     link: 'https://github.com/Laluboom/pretty_fly_analytics',
   },
   {
     title: 'game_theory',
     description:
-      "Pits iterated prisoner's dilemma strategies against each other, Axelrod-style, to see which one actually wins.",
+      "Pits iterated prisoner's dilemma strategies against each other, Axelrod-style, mostly just called the library functions and felt smart.",
     link: 'https://github.com/Laluboom/game_theory',
   },
   {
     title: 'BudgetSorter',
-    description: "Reads your receipts with OCR and checks them against your bank statement so you don't have to.",
+    description: "Reads your receipts with OCR and checks them against your bank statement. Haven't used it once. YET",
     link: 'https://github.com/Laluboom/BudgetSorter',
   },
 ];
