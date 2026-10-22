@@ -103,12 +103,26 @@ export default function Darkroom() {
     return () => window.removeEventListener('pointermove', onMove);
   }, [lit, touch, move]);
 
+  // On a desktop the mouse IS the glass, so the arrow goes away. Flagged
+  // on <html> rather than in a blanket rule, so the lit game pages and
+  // anyone who has hit the switch keep a normal cursor.
+  useEffect(() => {
+    if (lit || touch) return;
+    document.documentElement.dataset.lens = 'mouse';
+    return () => {
+      delete document.documentElement.dataset.lens;
+    };
+  }, [lit, touch]);
+
   // Tabbing through a dark page would otherwise be completely blind.
   useEffect(() => {
     if (lit) return;
     const onFocus = (e: FocusEvent) => {
       const el = e.target;
       if (!(el instanceof HTMLElement)) return;
+      // Keyboard focus only. focusin also fires on a plain click, which
+      // would yank the lens to whatever link you just pressed.
+      if (!el.matches(':focus-visible')) return;
       const r = el.getBoundingClientRect();
       move(r.left + r.width / 2, r.top + r.height / 2);
     };

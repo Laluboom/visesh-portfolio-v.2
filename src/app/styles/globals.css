@@ -345,3 +345,9 @@ html[data-lights='on'] .darkroom,
 html[data-lights='on'] .glass {
   display: none;
 }
+
+/* Desktop, lights out: the pointer is the glass, so the arrow goes away. */
+html[data-lens='mouse'][data-lights='off'],
+html[data-lens='mouse'][data-lights='off'] * {
+  cursor: none;
+}

@@ -11,12 +11,16 @@ export const metadata = {
 /*
   Runs before the first paint. Without it the page flashes dark on every
   navigation for anyone who has already found the light switch.
+
+  <html> carries suppressHydrationWarning because of it: the script flips
+  data-lights before React hydrates, so the server's "off" and the client's
+  "on" disagree by design. It covers that element's own attributes only.
 */
 const lights = `try{if(sessionStorage.getItem('lights')==='on')document.documentElement.dataset.lights='on'}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-lights="off">
+    <html lang="en" data-lights="off" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: lights }} />
       </head>
