@@ -325,19 +325,38 @@
   cursor: grab;
 }
 
-/* Hidden in plain sight: only findable with the lens, still Tab-reachable. */
+/*
+  Hidden in plain sight: only findable with the lens, still Tab-reachable.
+  This is the one element on the site that is allowed to be an object
+  rather than text, so it drops every button style the base layer gives it.
+*/
 .lamp {
   position: fixed;
   z-index: 30;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  padding: 0.3em 0.4em;
+  padding: 0;
+  background: transparent;
   text-decoration: none;
+  line-height: 0;
   transform: translate(-50%, -50%);
+}
+
+.lamp:hover {
+  background: transparent;
 }
 
 .lamp:focus-visible {
   outline: 2px solid var(--link);
+  outline-offset: 3px;
+}
+
+.lamp-rocker {
+  transition: transform 120ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lamp-rocker {
+    transition: none;
+  }
 }
 
 /* Lights on: the dark and the glass go away, the switch stays. */
