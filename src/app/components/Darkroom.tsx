@@ -25,6 +25,10 @@ const ALWAYS_LIT = ['/projects/DevilSuika', '/projects/arcaderoom'];
 const RADIUS = 86;
 const RADIUS_TOUCH = 74;
 
+// The handle, and the padding the SVG box needs so it does not clip it.
+const HANDLE = 122;
+const PAD = HANDLE + 30;
+
 // The switch plate, in CSS pixels. Used to test candidate spots for
 // overlap before one is chosen.
 const SWITCH_W = 52;
@@ -232,6 +236,10 @@ export default function Darkroom() {
   if (lit) return null;
 
   const r = touch ? RADIUS_TOUCH : RADIUS;
+  // Centre of the SVG box, and cos(45 degrees): the handle leaves the rim
+  // on the diagonal, so both of its coordinates move by the same amount.
+  const c = r + PAD;
+  const k = Math.SQRT1_2;
 
   return (
     <>
@@ -322,15 +330,49 @@ export default function Darkroom() {
           !important on everything, and an !important inside a layer beats
           one outside it, so a CSS circle would come out a square.
         */}
-        <svg width={r * 2 + 48} height={r * 2 + 48} viewBox={`0 0 ${r * 2 + 48} ${r * 2 + 48}`}>
+        <svg width={c * 2} height={c * 2} viewBox={`0 0 ${c * 2} ${c * 2}`}>
+          {/*
+            The handle, drawn before the rims so the rim sits on top of
+            where the two meet. Wood, because a white stick on a black
+            page reads as a scratch rather than a thing you hold.
+          */}
           <line
-            x1={r + 24 + r * 0.72}
-            y1={r + 24 + r * 0.72}
-            x2={r + 24 + r * 0.72 + 30}
-            y2={r + 24 + r * 0.72 + 30}
-            stroke="#ffffff"
-            strokeWidth="9"
+            x1={c + r * k}
+            y1={c + r * k}
+            x2={c + (r + HANDLE) * k}
+            y2={c + (r + HANDLE) * k}
+            stroke="#4a2f16"
+            strokeWidth="26"
             strokeLinecap="round"
+          />
+          <line
+            x1={c + r * k}
+            y1={c + r * k}
+            x2={c + (r + HANDLE) * k}
+            y2={c + (r + HANDLE) * k}
+            stroke="#a9733c"
+            strokeWidth="20"
+            strokeLinecap="round"
+          />
+          {/* a highlight down one side, so it reads as round, not flat */}
+          <line
+            x1={c + (r + 10) * k}
+            y1={c + (r + 10) * k}
+            x2={c + (r + HANDLE - 12) * k}
+            y2={c + (r + HANDLE - 12) * k}
+            stroke="rgba(255,228,190,0.35)"
+            strokeWidth="5"
+            strokeLinecap="round"
+          />
+          {/* the brass collar where the handle meets the glass */}
+          <line
+            x1={c + (r - 2) * k}
+            y1={c + (r - 2) * k}
+            x2={c + (r + 20) * k}
+            y2={c + (r + 20) * k}
+            stroke="#c9a227"
+            strokeWidth="24"
+            strokeLinecap="butt"
           />
           {/*
             Two rims. The white one sits just outside the hole where the
@@ -338,16 +380,16 @@ export default function Darkroom() {
             where a white rim would disappear into the page.
           */}
           <circle
-            cx={r + 24}
-            cy={r + 24}
+            cx={c}
+            cy={c}
             r={r + 4}
             fill="none"
             stroke="#ffffff"
             strokeWidth="4"
           />
           <circle
-            cx={r + 24}
-            cy={r + 24}
+            cx={c}
+            cy={c}
             r={r - 1}
             fill="none"
             stroke="rgba(0,0,0,0.6)"
@@ -357,8 +399,8 @@ export default function Darkroom() {
           {touch && (
             <circle
               className="glass-grab"
-              cx={r + 24}
-              cy={r + 24}
+              cx={c}
+              cy={c}
               r={r}
               fill="none"
               stroke="transparent"
