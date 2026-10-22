@@ -66,7 +66,7 @@ export default function NotesSheet() {
         ref={openerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed z-40 bottom-4 right-4"
+        className="fixed z-[47] bottom-4 right-4"
         aria-haspopup="dialog"
         aria-expanded={open}
       >

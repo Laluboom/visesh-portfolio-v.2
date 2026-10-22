@@ -283,3 +283,65 @@
     animation-delay: 0ms;
   }
 }
+
+/*
+  The stalk lens. The page loads dark and you read it through a hole of
+  light. Everything here is painted by one fixed element with
+  pointer-events: none, so the page underneath stays usable in the dark.
+*/
+.darkroom {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  pointer-events: none;
+  --lx: 50vw;
+  --ly: 50vh;
+  --lr: 86px;
+  background: radial-gradient(
+    circle at var(--lx) var(--ly),
+    transparent var(--lr),
+    rgba(0, 0, 0, 0.93) calc(var(--lr) + 26px),
+    #000000 calc(var(--lr) + 90px)
+  );
+}
+
+.glass {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 46;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/*
+  Touch only. The ring stroke is the handle you drag. The wrapper stays
+  pointer-events: none so the page still scrolls and a link sitting inside
+  the lens still takes a tap.
+*/
+.glass-draggable svg circle.glass-grab {
+  pointer-events: stroke;
+  touch-action: none;
+  cursor: grab;
+}
+
+/* Hidden in plain sight: only findable with the lens, still Tab-reachable. */
+.lamp {
+  position: fixed;
+  z-index: 30;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 0.3em 0.4em;
+  text-decoration: none;
+  transform: translate(-50%, -50%);
+}
+
+.lamp:focus-visible {
+  outline: 2px solid var(--link);
+}
+
+/* Lights on: the dark and the glass go away, the switch stays. */
+html[data-lights='on'] .darkroom,
+html[data-lights='on'] .glass {
+  display: none;
+}
