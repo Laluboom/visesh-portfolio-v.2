@@ -1,93 +1,99 @@
 # reference
 
-Personal portfolio site for Visesh. Second attempt (`v.2`). Next.js App Router + Tailwind v4,
-with two interactive project pages: a canvas Suika (fruit-merge) clone and an R3F 3D arcade room.
+Personal portfolio for Lalu Boom (the GitHub handle; `github.com/Laluboom`). Next.js App
+Router, deployed to **Cloudflare Workers** via OpenNext as the worker `stalklalu`. Two
+interactive project pages: a canvas Suika (fruit-merge) clone and an R3F 3D arcade room.
 
-Last verified 2026-10-07 against commit `bba2be9`, with a running dev server.
+Last verified 2026-10-22 against commit `f1c7618`, with a running dev server.
+
+## Why it exists
+
+Not vanity. Google's OAuth consent screen expires an unverified ("Testing") app's refresh
+tokens every 7 days; moving to "Production" needs a domain-verified home page + privacy
+policy, and a `*.github.io` or Google Sites URL does not qualify. `stalklalu.com` is that
+domain. The hero copy says so outright. `/privacy` and `/terms` here mirror the hosted pages
+Google's consent screen points at.
 
 ## Run it
 
 ```bash
 npm ci
-npm run dev      # http://localhost:3000 — Next 16.2.6 on Turbopack
+npm run dev        # http://localhost:4100  (NOT 3000 — changed in c9dc2a2)
 npm run build
+npm run cf:deploy  # opennextjs-cloudflare build && deploy
 ```
 
-`npm run lint` is **broken** — `next lint` was removed in Next 16, so the CLI reads `lint` as a
-project directory and errors out. Use `npx eslint .` until `package.json:9` is fixed.
+`npm run lint` is **broken** — `package.json:9` still says `next lint`, removed in Next 16, so
+the CLI reads `lint` as a directory and dies. Use `npx eslint .` until it is fixed.
 
 There is no test suite, no test runner, and no CI.
 
 ## Stack
 
-Next 16.2.6 (App Router, Turbopack) · React 19 · TypeScript 5 (`strict: true`) ·
-Tailwind v4 via `@tailwindcss/postcss` · `@react-three/fiber` 9 + `@react-three/drei` 10 +
-three 0.184. Deps are caret-ranged but `package-lock.json` is committed, so installs are
-reproducible. No backend, no API routes, no env vars, no secrets — everything is static or
+Next 16.2.6 (App Router, Turbopack) · React 19 · TypeScript 5 (`strict: true`) · Tailwind v4
+via `@tailwindcss/postcss` · `@react-three/fiber` 9 + `@react-three/drei` 10 + three 0.184 ·
+`@opennextjs/cloudflare` 1.20 + wrangler 4. Deps are caret-ranged but `package-lock.json` is
+committed. No backend, no API routes, no env vars, no secrets — everything is static or
 client-side.
+
+## Design system
+
+`styles/globals.css` — brutalist/plain-HTML: white page, **no borders at all**, zero radius /
+shadow / blur / gradient, serif body (Georgia) with monospace headings and nav. Structure comes
+from spacing and the `--surface: #f2f2f2` shading on `.box` / `.btn` / `code`. Two load-bearing
+comments in that file explain (a) why the rules must stay inside `@layer base`/`components` —
+unlayered CSS outranks Tailwind utilities and once left a "Menu" button visible on desktop —
+and (b) that `--surface` exists because dropping the borders left blocks invisible.
 
 ## Layout
 
 ```
 src/app/
-  layout.tsx            root layout — Navbar + globals.css (metadata is still scaffold default)
-  page.tsx              home: #hero / #features / #faq
-  home/                 Hero, Features (carousel, "Trial 1"–"Trial 5"), FAQ (accordion)
-  components/Navbar.tsx sticky top nav, 5 links, no mobile treatment; only file using next/link
-  about/page.tsx        static, one card strip still lorem ipsum
-  contact/page.tsx      every contact detail is a placeholder
-  projects/page.tsx     6 cards; 3 point at routes that do not exist
-  projects/DevilSuika/  Fruits.ts (physics) · GameCanvas.tsx (rAF loop) · page.tsx · GameUI.tsx (orphaned)
-  projects/arcaderoom/  R3F scene: public/room/arcade.glb (6.4 MB, committed) + a remote 1.4 MB HDRI
-  projects/LaluPi/      static write-up, real content — links out to stalklalu.com
-  styles/globals.css    Tailwind import + a `.text-gradient` helper
+  layout.tsx            root layout — Navbar + globals.css; metadata is real now
+  page.tsx              home: Hero + Features
+  home/Hero.tsx         full-viewport name + the honest one-liner above
+  home/Features.tsx     5 real GitHub projects, id="features" (the /#features nav target)
+  components/Navbar.tsx 4 links; mobile menu is a pure-CSS checkbox hack, no JS, no state
+  about/page.tsx        real content: background, Foreman, skills, 4 project links
+  contact/page.tsx      real email / GitHub / LinkedIn
+  projects/page.tsx     15 real projects in a dense grid, 3 internal + 12 GitHub links
+  projects/DevilSuika/  Fruits.ts (physics) · GameCanvas.tsx (rAF loop) · page.tsx ·
+                        GameUI.tsx (dead code, imported nowhere)
+  projects/arcaderoom/  R3F scene: public/room/arcade.glb (6.4 MB) + a remote 1.4 MB HDRI
+  projects/LaluPi/      write-up on Foreman and why stalklalu.com exists
+  privacy/ terms/       the OAuth-verification pages
 ```
 
 ## Current state
 
-Builds and serves cleanly; the shell of a real site is there. What is missing is content and one
-working interaction. Route check 2026-10-07: `/`, `/about`, `/contact`, `/projects`,
-`/projects/DevilSuika`, `/projects/arcaderoom` all 200; `/projects/2048Game`,
-`/projects/js-mini-tools`, `/projects/how-i-built-my-portfolio` all 404.
+Healthy and moving — five real commits in the last four days after ~4.5 months idle. Content
+is done and honest; the remaining work is all in the two interactive pages.
 
-**The Suika game is broken in four coupled ways**, all re-verified today by replaying the
-physics headlessly. (a) The merge rule can never fire on a vertical drop: `resolveCollision`
-separates a pair to exactly `minDist` (`Fruits.ts:60-69`) while the merge test is a strict
-`dist < minDist` (`GameCanvas.tsx:95`) — with `dx == 0` there is no floating-point slop to
-rescue it; 600 frames, zero merges. (b) When a top-tier pair *does* merge, both fruits are
-deleted and nothing replaces them (`GameCanvas.tsx:96-104`) — so fixing (a) alone makes
-Watermelons vanish routinely. (c) A full-bleed overlay in `DevilSuika/page.tsx:20` intercepts
-input meant for the canvas, so drops land offset from the cursor and the ghost preview never
-renders. (d) That overlay is the only thing masking an uncancelled `requestAnimationFrame` loop
-in `GameCanvas.tsx:39-123`. See `todo.md` tasks 1 and 3 — the pairings matter.
+Route check 2026-10-22, all over HTTP: `/`, `/about`, `/contact`, `/projects`,
+`/projects/DevilSuika`, `/projects/arcaderoom`, `/projects/LaluPi`, `/privacy`, `/terms` →
+**all 200**. No dead internal links anywhere. `/favicon.ico` → **404** (none exists).
+Served `<title>` is `Lalu Boom`; `id="features"` appears exactly once.
 
-`/projects/arcaderoom` pulls its `Environment preset="sunset"` HDRI from `raw.githack.com` at
-runtime (a free third-party GitHub proxy), with no ErrorBoundary over the `Suspense`. Combined
-with the 6.4 MB local `.glb` and `fallback={null}`, the page is a silent black canvas on load.
+**The Suika merge works.** `aede087` added the `+ 0.5` slop at `GameCanvas.tsx:95` and moved
+`mergedIndices.add` inside the top-tier guard at `:97`. Replayed headlessly today: 64 Cherries
+at one fixed x (`dx == 0`), 3000 frames → 62 merges, full chain to Watermelon, two Watermelons
+correctly left un-merged. **The three "it's broken" strings on `/projects` and the DevilSuika
+banner are stale** — see `todo.md` task 1.
 
-Most user-facing copy is still placeholder: the homepage carousel reads "Trial 1"–"Trial 5",
-`/contact` lists `you@example.com` and `github.com/yourusername`, `/about` has lorem ipsum, and
-the served `<title>` is still `My App`.
+What is actually still wrong on that page: the overlay at `page.tsx:25-28` is a *sibling* of
+the canvas, so it eats every mouse event — drops land ~240px right of the cursor at 1280px
+wide (`page.tsx:11` measures the overlay's rect, not the canvas's) and the ghost preview is
+dead code. Fixing that exposes an uncancelled `requestAnimationFrame` at `GameCanvas.tsx:114`
+whose cleanup never cancels it, with `[mouseX]` as the effect's dep — one rAF loop per mouse
+movement. **These must be fixed together**; `todo.md` task 2 explains why.
 
-## 2026-10-18 addition: `/projects/LaluPi`
-
-New card + page, added by hand (not the doer). A short write-up about
-Foreman, the personal automation system in `~/repos/_agents/`, and why
-`stalklalu.com` exists: Google's OAuth consent screen auto-expires an
-unverified ("Testing" status) app's refresh tokens every 7 days, and
-moving to "Production" status requires a domain-verified home page +
-privacy policy — a bare `*.github.io` or Google Sites URL doesn't qualify,
-since Google requires provable exclusive domain ownership. `stalklalu.com`
-(Cloudflare Registrar + Cloudflare Pages, direct upload, no CI) is that
-domain; its home page and `/privacy` are the actual pages Google's
-consent screen now points at, hosted independently of this repo. This
-page here is just the portfolio write-up about that work, not a copy of
-the hosted pages themselves. Verified via `npm run build` — compiles
-clean, 8 static routes including this one.
+`/projects/arcaderoom` still pulls `Environment preset="sunset"` from `raw.githack.com` at
+runtime with no ErrorBoundary over the `Suspense`, so a CDN 403 unmounts the route rather than
+falling back to the two lights already in the scene. Its on-page warning banner is honest.
 
 ## History
 
-Three real commits. Scaffold (2025-06-29), all the component work in one drop (2025-09-30), then
-a dependency bump to Next 16 (2026-05-31). **No source changes since** — roughly 4.5 months
-idle. Three daily reviews (2026-09-16, 2026-09-26, 2026-10-07) have produced notes only; no
-proposed task has been started.
+Scaffold 2025-06-29, components 2025-09-30, Next 16 bump 2026-05-31, then nothing for 4.5
+months. Three daily reviews (2026-09-16, -09-26, -10-07) produced notes only. The 2026-10-07
+list finally got acted on: merge fix, v1 content merge, Cloudflare adapter, `/privacy` +
+`/terms`, LaluPi write-up, brutalist redesign, rebrand to Lalu Boom.
