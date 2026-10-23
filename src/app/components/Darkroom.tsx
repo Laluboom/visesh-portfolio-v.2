@@ -92,8 +92,15 @@ export default function Darkroom() {
   // anything that depends on the pointer staying over the grip stops
   // after one frame, which is why this did not work on a phone.
   const dragging = useRef<number | null>(null);
+  // Where the lens is, and where on it the finger landed. Without the
+  // offset the lens would snap its centre to the finger, which throws the
+  // handle out from under you on the first pixel of the drag, and can
+  // leave the handle off-screen entirely if you let go near an edge.
+  const pos = useRef({ x: 0, y: 0 });
+  const grab = useRef({ x: 0, y: 0 });
 
   const move = useCallback((x: number, y: number) => {
+    pos.current = { x, y };
     const dark = darkRef.current;
     const glass = glassRef.current;
     if (dark) {
@@ -271,6 +278,10 @@ export default function Darkroom() {
 
   const startDrag = (e: React.PointerEvent<HTMLDivElement>) => {
     dragging.current = e.pointerId;
+    grab.current = {
+      x: e.clientX - pos.current.x,
+      y: e.clientY - pos.current.y,
+    };
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {
@@ -283,7 +294,7 @@ export default function Darkroom() {
     const onMove = (e: PointerEvent) => {
       if (dragging.current !== e.pointerId) return;
       e.preventDefault();
-      move(e.clientX, e.clientY);
+      move(e.clientX - grab.current.x, e.clientY - grab.current.y);
     };
     const onEnd = (e: PointerEvent) => {
       if (dragging.current === e.pointerId) dragging.current = null;
