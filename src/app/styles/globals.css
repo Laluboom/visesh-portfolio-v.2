@@ -222,7 +222,7 @@
   pad underneath it on the way out.
 */
 .notes-dismissing {
-  animation: notes-settle 1.6s ease-in 1s both;
+  animation: notes-settle 2.1s ease-in 1s both;
 }
 
 .notes-cheer span {
