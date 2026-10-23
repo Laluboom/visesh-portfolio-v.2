@@ -43,11 +43,28 @@ const EDGE = 150;
 const CONTENT =
   'p,h1,h2,h3,h4,h5,h6,a,li,button,input,textarea,label,img,canvas,svg,table,pre,code';
 
+const SPOT_KEY = 'lightswitch';
+
+// Where the switch ended up, kept for the session so it is in the same
+// place every time you come back to the hero.
+const stored = (): { x: number; y: number } | null => {
+  try {
+    const raw = window.sessionStorage.getItem(SPOT_KEY);
+    if (!raw) return null;
+    const v = JSON.parse(raw);
+    return typeof v?.x === 'number' && typeof v?.y === 'number' ? v : null;
+  } catch {
+    return null;
+  }
+};
+
 export default function Darkroom() {
   const pathname = usePathname();
   const lit = ALWAYS_LIT.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`)
   );
+  // The switch lives on one wall, in the hero, and nowhere else.
+  const atHome = pathname === '/';
 
   const darkRef = useRef<HTMLDivElement>(null);
   const glassRef = useRef<HTMLDivElement>(null);
@@ -56,6 +73,25 @@ export default function Darkroom() {
   const [switchPos, setSwitchPos] = useState<{ x: number; y: number } | null>(
     null
   );
+
+  // Stored in document coordinates, not viewport ones, so scrolling back
+  // up puts it exactly where it was.
+  const place = useCallback((p: { x: number; y: number }) => {
+    const spot = { x: p.x, y: p.y + window.scrollY };
+    setSwitchPos(spot);
+    try {
+      window.sessionStorage.setItem(SPOT_KEY, JSON.stringify(spot));
+    } catch {
+      // Blocked storage. It still works, it just moves on the next load.
+    }
+  }, []);
+
+  // The drag is tracked on window rather than on the grip, and the id is
+  // kept in a ref rather than read back from setPointerCapture. The glass
+  // moves out from under the finger the moment the drag starts, so
+  // anything that depends on the pointer staying over the grip stops
+  // after one frame, which is why this did not work on a phone.
+  const dragging = useRef<number | null>(null);
 
   const move = useCallback((x: number, y: number) => {
     const dark = darkRef.current;
@@ -95,6 +131,8 @@ export default function Darkroom() {
   // hydration mismatch, and re-picked on resize, because a spot that was
   // empty at one width is in the middle of a sentence at another.
   useEffect(() => {
+    if (!atHome) return;
+
     const pick = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -148,13 +186,13 @@ export default function Darkroom() {
             r.bottom > box.top
         );
         if (!hits) {
-          setSwitchPos({ x, y });
+          place({ x, y });
           return;
         }
       }
       // Nowhere clean. Bottom left is the emptiest corner on every page
       // here, and a findable switch beats a perfectly placed one.
-      setSwitchPos({ x: half.w + 10, y: h - half.h - 10 });
+      place({ x: half.w + 10, y: h - half.h - 10 });
     };
 
     // Wait for the webfonts, because measuring a layout mid-swap puts the
@@ -165,15 +203,25 @@ export default function Darkroom() {
     const run = () => {
       if (done) return;
       done = true;
-      pick();
+      const kept = stored();
+      if (kept) setSwitchPos(kept);
+      else pick();
     };
     document.fonts?.ready.then(run).catch(run);
     const safety = window.setTimeout(run, 600);
 
+    // A resize does not move it. It is screwed to the wall for the rest of
+    // the session; it only gets a new spot if the old one is now off the
+    // page entirely.
     let timer = 0;
     const onResize = () => {
       window.clearTimeout(timer);
-      timer = window.setTimeout(pick, 200);
+      timer = window.setTimeout(() => {
+        const kept = stored();
+        if (!kept || kept.x > window.innerWidth || kept.y > document.body.scrollHeight) {
+          pick();
+        }
+      }, 200);
     };
     window.addEventListener('resize', onResize);
     return () => {
@@ -182,7 +230,7 @@ export default function Darkroom() {
       window.clearTimeout(timer);
       window.removeEventListener('resize', onResize);
     };
-  }, [touch]);
+  }, [touch, atHome, place]);
 
   // Start the lens in the middle, then follow the mouse on a desktop.
   useEffect(() => {
@@ -221,6 +269,35 @@ export default function Darkroom() {
     return () => window.removeEventListener('focusin', onFocus);
   }, [lit, move]);
 
+  const startDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    dragging.current = e.pointerId;
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // Capture is a nicety. The window listeners below do the work.
+    }
+  };
+
+  useEffect(() => {
+    if (lit || !touch) return;
+    const onMove = (e: PointerEvent) => {
+      if (dragging.current !== e.pointerId) return;
+      e.preventDefault();
+      move(e.clientX, e.clientY);
+    };
+    const onEnd = (e: PointerEvent) => {
+      if (dragging.current === e.pointerId) dragging.current = null;
+    };
+    window.addEventListener('pointermove', onMove, { passive: false });
+    window.addEventListener('pointerup', onEnd);
+    window.addEventListener('pointercancel', onEnd);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onEnd);
+      window.removeEventListener('pointercancel', onEnd);
+    };
+  }, [lit, touch, move]);
+
   const toggle = () => {
     const next = !on;
     setOn(next);
@@ -240,6 +317,8 @@ export default function Darkroom() {
   // on the diagonal, so both of its coordinates move by the same amount.
   const c = r + PAD;
   const k = Math.SQRT1_2;
+  // Middle of the handle, measured out from the centre of the glass.
+  const grip = (r + HANDLE / 2) * k;
 
   return (
     <>
@@ -250,6 +329,7 @@ export default function Darkroom() {
         border-radius: 0 !important on everything and would square off
         anything built out of divs.
       */}
+      {atHome && (
       <button
         type="button"
         onClick={toggle}
@@ -296,6 +376,7 @@ export default function Darkroom() {
           />
         </svg>
       </button>
+      )}
 
       <div
         ref={darkRef}
@@ -304,27 +385,25 @@ export default function Darkroom() {
         aria-hidden="true"
       />
 
-      <div
-        ref={glassRef}
-        className={`glass${touch ? ' glass-draggable' : ''}`}
-        aria-hidden="true"
-        onPointerDown={
-          touch
-            ? (e) => {
-                e.currentTarget.setPointerCapture(e.pointerId);
-              }
-            : undefined
-        }
-        onPointerMove={
-          touch
-            ? (e) => {
-                if (e.currentTarget.hasPointerCapture(e.pointerId)) {
-                  move(e.clientX, e.clientY);
-                }
-              }
-            : undefined
-        }
-      >
+      <div ref={glassRef} className="glass" aria-hidden="true">
+        {/*
+          On a phone you move the glass by its handle, the way you would
+          pick up a real one. A plain div rather than the SVG stroke:
+          touch-action is honoured unevenly on SVG children, and relying
+          on it there is what stopped the drag working at all. The circle
+          itself stays untouchable, so the page still scrolls and a link
+          under the lens still takes a tap.
+        */}
+        {touch && (
+          <div
+            className="glass-grip"
+            style={{
+              transform: `translate(-50%, -50%) translate(${grip}px, ${grip}px)`,
+            }}
+            onPointerDown={startDrag}
+          />
+        )}
+
         {/*
           Drawn as SVG on purpose. The base layer sets border-radius: 0
           !important on everything, and an !important inside a layer beats
@@ -395,18 +474,6 @@ export default function Darkroom() {
             stroke="rgba(0,0,0,0.6)"
             strokeWidth="3"
           />
-          {/* Invisible, fat, and the only thing on the glass you can grab. */}
-          {touch && (
-            <circle
-              className="glass-grab"
-              cx={c}
-              cy={c}
-              r={r}
-              fill="none"
-              stroke="transparent"
-              strokeWidth="30"
-            />
-          )}
         </svg>
       </div>
     </>
