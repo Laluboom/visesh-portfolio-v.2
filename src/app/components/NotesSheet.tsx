@@ -48,7 +48,8 @@ export default function NotesSheet() {
       setOpen(false);
       setLines(emptyLines());
       openerRef.current?.focus();
-    }, 2600);
+    // 1s holding the notice, then the 2.1s fade in globals.css.
+    }, 3100);
     return () => window.clearTimeout(t);
   }, [sent]);
 

@@ -9,13 +9,17 @@ export default function AboutPage() {
             I&apos;m Lalu Boom. Here&apos;s why I am, what I&apos;ve actually 
             built and how I work.
           </p>
-          <p className="mt-4">
-            Existed in upper quartile of scholastic ranking cause smart parents(exposition)
-            Wasted a year on mechanical engineering cause bad priority (conflict)
-            Built a CLI physics calculator using chatgpt cause lazy (Rising Action)
-            Studied Math and Data Science and made softwares cause money. (Falling Action)
-            Idk yet, obviously (Resolution)
-          </p>
+          {/*
+            One beat per line. Newlines inside a single <p> collapse to
+            spaces, which ran all five of these together.
+          */}
+          <div className="mt-4 space-y-1">
+            <p>Existed in upper quartile of scholastic ranking cause smart parents (exposition)</p>
+            <p>Wasted a year on mechanical engineering cause bad priority (conflict)</p>
+            <p>Built a CLI physics calculator using chatgpt cause lazy (Rising Action)</p>
+            <p>Studied Math and Data Science and made softwares cause money. (Falling Action)</p>
+            <p>Idk yet, obviously (Resolution)</p>
+          </div>
         </div>
 
         {/* Two-Column Block */}
@@ -55,19 +59,21 @@ export default function AboutPage() {
           </div>
           <div className="box">
             <h2 className="mb-2 text-2xl">Foreman, and what it taught me</h2>
-            <p>
-              Started with OpenClaw, was all the rage and thought it'd be cool even though no use case yet
-              Then heard about hermes and thought it'd be even cooler. so I moved to that. Still no use case.
-              It sat rotting on my old laptop/server cause no use case. Deleted everything cause purging feels good.
-              Found some use cases 3 months later, but I realized don't need a whole harness for simple scripts(duh). 
-              Anyways, Here is the AI summary of my project description(its a little pretentious, forgive me):
-                The project I'd point to is Foreman. It's a Discord-driven multi-agent
-                automation system I built with 565+ tests, a four-tier LLM provider cascade,
-                systemd-based automation, and an escalation/circuit-breaker safety system.
-                Building something that's meant to run unattended changed how I think about
-                code. I care more about failure modes and recovery paths than the happy path,
-                because the tests and the circuit breaker only exist because autonomous systems
-                fail in ways you don't see coming. Read more on the{' '}
+            <div className="space-y-1">
+              <p>Started with OpenClaw, was all the rage and thought it&apos;d be cool even though no use case yet</p>
+              <p>Then heard about hermes and thought it&apos;d be even cooler. so I moved to that. Still no use case.</p>
+              <p>It sat rotting on my old laptop/server cause no use case. Deleted everything cause purging feels good.</p>
+              <p>Found some use cases 3 months later, but I realized don&apos;t need a whole harness for simple scripts (duh).</p>
+              <p>Anyways, Here is the AI summary of my project description (its a little pretentious, forgive me):</p>
+            </div>
+            <p className="mt-3 pl-4">
+              The project I&apos;d point to is Foreman. It&apos;s a Discord-driven multi-agent
+              automation system I built with 565+ tests, a four-tier LLM provider cascade,
+              systemd-based automation, and an escalation/circuit-breaker safety system.
+              Building something that&apos;s meant to run unattended changed how I think about
+              code. I care more about failure modes and recovery paths than the happy path,
+              because the tests and the circuit breaker only exist because autonomous systems
+              fail in ways you don&apos;t see coming. Read more on the{' '}
               <a href="/projects/LaluPi">Foreman project page</a>.
             </p>
           </div>

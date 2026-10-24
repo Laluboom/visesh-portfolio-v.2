@@ -222,7 +222,7 @@
   pad underneath it on the way out.
 */
 .notes-dismissing {
-  animation: notes-settle 1.6s ease-in 1s both;
+  animation: notes-settle 2.1s ease-in 1s both;
 }
 
 .notes-cheer span {
@@ -315,12 +315,17 @@
 }
 
 /*
-  Touch only. The ring stroke is the handle you drag. The wrapper stays
-  pointer-events: none so the page still scrolls and a link sitting inside
-  the lens still takes a tap.
+  Touch only: the handle is the grab target. Sized generously because a
+  finger is not a mouse pointer, and touch-action: none so dragging it
+  does not scroll the page instead.
 */
-.glass-draggable svg circle.glass-grab {
-  pointer-events: stroke;
+.glass-grip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 72px;
+  height: 72px;
+  pointer-events: auto;
   touch-action: none;
   cursor: grab;
 }
@@ -331,7 +336,9 @@
   rather than text, so it drops every button style the base layer gives it.
 */
 .lamp {
-  position: fixed;
+  /* Absolute, not fixed: it is screwed to the hero and scrolls away with
+     it, instead of following you down the page. */
+  position: absolute;
   z-index: 30;
   padding: 0;
   background: transparent;
