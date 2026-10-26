@@ -43,12 +43,20 @@ const EDGE = 150;
 const CONTENT =
   'p,h1,h2,h3,h4,h5,h6,a,li,button,input,textarea,label,img,canvas,svg,table,pre,code';
 
-// Where the switch ended up. Module-level on purpose: it has to survive a
-// client-side route change, so the switch does not jump when you come back
-// to the hero, and it has to die on a reload, so a reload is a new hunt.
-// sessionStorage did the first half and broke the second, which is how the
-// switch ended up in the same place every single load.
-let spot: { x: number; y: number } | null = null;
+const SPOT_KEY = 'lightswitch';
+
+// Where the switch ended up, kept for the session so it is in the same
+// place every time you come back to the hero.
+const stored = (): { x: number; y: number } | null => {
+  try {
+    const raw = window.sessionStorage.getItem(SPOT_KEY);
+    if (!raw) return null;
+    const v = JSON.parse(raw);
+    return typeof v?.x === 'number' && typeof v?.y === 'number' ? v : null;
+  } catch {
+    return null;
+  }
+};
 
 export default function Darkroom() {
   const pathname = usePathname();
@@ -69,8 +77,13 @@ export default function Darkroom() {
   // Stored in document coordinates, not viewport ones, so scrolling back
   // up puts it exactly where it was.
   const place = useCallback((p: { x: number; y: number }) => {
-    spot = { x: p.x, y: p.y + window.scrollY };
+    const spot = { x: p.x, y: p.y + window.scrollY };
     setSwitchPos(spot);
+    try {
+      window.sessionStorage.setItem(SPOT_KEY, JSON.stringify(spot));
+    } catch {
+      // Blocked storage. It still works, it just moves on the next load.
+    }
   }, []);
 
   // The drag is tracked on window rather than on the grip, and the id is
@@ -133,10 +146,14 @@ export default function Darkroom() {
       const clear = (touch ? RADIUS_TOUCH : RADIUS) + 130;
 
       const taken = Array.from(document.querySelectorAll(CONTENT))
-        // The lens and the switch itself are not content. The glass is a
-        // 476px SVG box parked in the middle of the screen, which on a
-        // phone is wider than the phone and rejected every candidate on
-        // both side strips.
+        // The lens and the switch are not content. The glass is drawn as
+        // a 452px SVG box sitting at the middle of the screen, which on a
+        // 375px phone is wider than the phone, so it was swallowing both
+        // side strips: x came out between 127 and 248 instead of 41 and
+        // 334, and a pick took a median of 12 tries instead of 2. The
+        // clear circle already keeps the switch away from the lens. Wide
+        // screens never noticed; the switch has to skip its own old rect
+        // too, or a re-pick blocks its own new spot.
         .filter((el) => !el.closest('.glass, .lamp'))
         .map((el) => el.getBoundingClientRect())
         .filter((r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < h);
@@ -202,7 +219,8 @@ export default function Darkroom() {
     const run = () => {
       if (done) return;
       done = true;
-      if (spot) setSwitchPos(spot);
+      const kept = stored();
+      if (kept) setSwitchPos(kept);
       else pick();
     };
     document.fonts?.ready.then(run).catch(run);
@@ -215,7 +233,8 @@ export default function Darkroom() {
     const onResize = () => {
       window.clearTimeout(timer);
       timer = window.setTimeout(() => {
-        if (!spot || spot.x > window.innerWidth || spot.y > document.body.scrollHeight) {
+        const kept = stored();
+        if (!kept || kept.x > window.innerWidth || kept.y > document.body.scrollHeight) {
           pick();
         }
       }, 200);
