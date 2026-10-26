@@ -366,6 +366,30 @@
   }
 }
 
+/*
+  The hero's go-find-it line. The bracketed half only makes sense for the
+  pointer you actually have, so both are rendered and one is hidden here
+  rather than in React: the head script sets data-lights before paint, so
+  there is no flash and no hydration mismatch either way.
+*/
+.hint-coarse {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .hint-coarse {
+    display: inline;
+  }
+  .hint-fine {
+    display: none;
+  }
+}
+
+/* The game is over once the lights are on, so stop telling people to play. */
+html[data-lights='on'] .hint {
+  display: none;
+}
+
 /* Lights on: the dark and the glass go away, the switch stays. */
 html[data-lights='on'] .darkroom,
 html[data-lights='on'] .glass {
