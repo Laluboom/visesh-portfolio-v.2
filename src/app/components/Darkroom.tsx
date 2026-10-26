@@ -20,7 +20,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 */
 
 // Pages you play with a mouse. Doing those in the dark is just annoying.
-const ALWAYS_LIT = ['/projects/DevilSuika', '/projects/arcaderoom'];
+export const ALWAYS_LIT = ['/projects/DevilSuika', '/projects/arcaderoom'];
 
 const RADIUS = 86;
 const RADIUS_TOUCH = 74;
@@ -140,9 +140,16 @@ export default function Darkroom() {
         // clear circle already keeps the switch away from the lens. Wide
         // screens never noticed; the switch has to skip its own old rect
         // too, or a re-pick blocks its own new spot.
-        .filter((el) => !el.closest('.glass, .lamp'))
+        .filter((el) => !el.closest('.glass, .lamp, .spam'))
         .map((el) => el.getBoundingClientRect())
         .filter((r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < h);
+
+      // The ad counts, but only as its outer box. Everything inside it is on
+      // the card, which is mid-animation whenever this runs: measure that and
+      // the switch can be placed somewhere the ad swings back into a moment
+      // later. The box itself never moves.
+      const ad = document.querySelector('.spam');
+      if (ad) taken.push(ad.getBoundingClientRect());
 
       const half = { w: SWITCH_W / 2 + 14, h: SWITCH_H / 2 + 14 };
 

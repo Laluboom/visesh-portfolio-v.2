@@ -420,3 +420,254 @@ html[data-lens='mouse'][data-lights='off'],
 html[data-lens='mouse'][data-lights='off'] * {
   cursor: none;
 }
+
+/*
+  The ad. Which edge it clings to is set by the inline script in layout.tsx
+  on <html>, before the first paint, so its rectangle is fixed by the time
+  Darkroom measures the page and picks a spot for the switch.
+
+  It sits at z-index 48, above .darkroom (45) and .glass (46), because an ad
+  that politely waited in the dark would not be an ad. Black on the highlight
+  yellow, which is the one pair here that reads on the white page and on the
+  black one.
+*/
+.spam {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  z-index: 48;
+  /*
+    Never scaled itself: this box is what getBoundingClientRect sees, sized
+    for the card at its largest, so the switch cannot be placed somewhere the
+    ad grows into a second later.
+  */
+  width: 190px;
+  height: 190px;
+  margin-top: -95px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #000000;
+  /*
+    Only the card takes taps. The box around it is dead space sized for the
+    animation, and on a phone it would otherwise sit over the glass handle and
+    swallow the drag.
+  */
+  pointer-events: none;
+}
+
+html[data-spam='left'] .spam {
+  left: 0;
+  right: auto;
+}
+
+html[data-spam='right'] .spam {
+  left: auto;
+  right: 0;
+}
+
+.spam:hover {
+  background: transparent;
+}
+
+.spam-card {
+  position: relative;
+  display: block;
+  width: 148px;
+  height: 118px;
+  /*
+    148 by 118, tilted up to 8 degrees and scaled up to 1.14, comes to 186 by
+    157: inside the 190px box above. Change any of the three numbers and
+    check that again, or the switch can be placed where the ad swings to.
+  */
+  animation: spam-lunge 2.6s ease-in-out infinite;
+  will-change: transform;
+  pointer-events: auto;
+}
+
+/* The link is the plate and the words. The cross is its own button beside it. */
+.spam-link {
+  position: absolute;
+  inset: 0;
+  display: block;
+  text-decoration: none;
+  color: #000000;
+}
+
+.spam-link:hover {
+  background: transparent;
+}
+
+/*
+  Inside the teeth, which bite 6px into the corner, and above the link so a
+  tap on it closes the ad instead of opening the digest.
+*/
+.spam-close {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  z-index: 1;
+  /*
+    30 square, and 34 on a phone. Still short of the 44 a touch target is
+    supposed to be: the card is only 112 wide down there, and a 44px cross
+    would sit on top of the words it is meant to let you dismiss.
+  */
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: transparent;
+}
+
+.spam-close:hover {
+  background: transparent;
+}
+
+.spam-close:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+/* The zigzag plate. Fills the card and sits under the words. */
+.spam-plate {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.spam-text {
+  position: relative;
+  display: block;
+  height: 100%;
+  padding: 0.7rem 0.9rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.spam-kicker {
+  display: block;
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.spam-title {
+  display: block;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.spam-line {
+  display: block;
+  margin: 0.15rem 0 0.3rem;
+}
+
+.spam-cta {
+  display: block;
+  text-decoration: underline;
+}
+
+/*
+  Close, far, and never quite straight. Rotation rides along with the scale
+  so it reads as a thing being waved at you rather than a box being resized.
+*/
+@keyframes spam-lunge {
+  0%,
+  100% {
+    transform: scale(0.74) rotate(-8deg);
+  }
+  35% {
+    transform: scale(1.14) rotate(5deg);
+  }
+  60% {
+    transform: scale(1.02) rotate(-3deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spam-card {
+    animation: none;
+    /* Still crooked, just no longer waving. */
+    transform: rotate(-5deg);
+  }
+}
+
+/*
+  No scrolling until the lights are on. :has(.lamp) is the test for "this
+  page has a light switch on it": Darkroom only renders the switch on the
+  home page, and not at all on the always-lit game pages, so /about and the
+  rest keep scrolling in the dark. It applies from the first paint and
+  releases the moment the switch flips data-lights.
+*/
+html[data-lights='off']:has(.lamp),
+html[data-lights='off']:has(.lamp) body {
+  overflow: hidden;
+  /*
+    Keep the scrollbar's width reserved while it is gone. Without it, a
+    desktop with classic scrollbars shifts the whole page sideways the moment
+    the lights come on, and the switch is positioned in pixels against a
+    layout that just moved.
+  */
+  scrollbar-gutter: stable;
+}
+
+/*
+  On a phone the hero fills the screen, and an ad at the vertical centre
+  lands straight on the LALU BOOM headline. Down here it sits in the gap
+  between the find-the-switch line and the Complaints button instead, which
+  is about 115px tall at 375x812, so the card shrinks to fit it.
+*/
+@media (max-width: 639px) {
+  .spam {
+    top: auto;
+    bottom: 66px;
+    margin-top: 0;
+    /* 112 by 84, tilted and scaled, measures 135 by 106 at its largest. */
+    width: 140px;
+    height: 120px;
+  }
+
+  .spam-card {
+    width: 112px;
+    height: 84px;
+  }
+
+  .spam-text {
+    padding: 0.4rem 0.45rem;
+    font-size: 0.55rem;
+    line-height: 1.25;
+  }
+
+  .spam-kicker {
+    font-size: 0.46rem;
+  }
+
+  .spam-title {
+    font-size: 0.72rem;
+  }
+
+  .spam-close {
+    top: 1px;
+    right: 1px;
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/*
+  The mobile menu is in normal flow with no z-index of its own, so a
+  positioned ad would paint over it. It does not overlap today, with four
+  links at the top of the page and the ad at the vertical centre, but a fifth
+  link should not be the thing that breaks the menu.
+*/
+html:has(#nav-toggle:checked) .spam {
+  display: none;
+}
