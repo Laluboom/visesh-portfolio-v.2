@@ -11,13 +11,14 @@ export default function AboutPage() {
           </p>
           {/*
             One beat per line. Newlines inside a single <p> collapse to
-            spaces, which ran all five of these together.
+            spaces, which ran all of these together.
           */}
           <div className="mt-4 space-y-1">
             <p>Existed in upper quartile of scholastic ranking cause smart parents (exposition)</p>
             <p>Wasted a year on mechanical engineering cause bad priority (conflict)</p>
-            <p>Built a CLI physics calculator using chatgpt cause lazy (Rising Action)</p>
-            <p>Studied Math and Data Science and made softwares cause money. (Falling Action)</p>
+            <p>Studied Math and Data Science and made softwares cause degree. (Rising Action)</p>
+            <p>Did not score an internship cause lazy (Climax)</p>
+            <p>working with a startup and networking cause money (Falling Action)</p>
             <p>Idk yet, obviously (Resolution)</p>
           </div>
         </div>
