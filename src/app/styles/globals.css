@@ -383,6 +383,25 @@
   .hint-fine {
     display: none;
   }
+
+  /*
+    Lifted over the dark, above .darkroom (45) and .glass (46). On a phone
+    the lens starts parked in the middle of the screen, lighting roughly
+    y 332 to 480 at 375x812, while this line sits at about y 610: the one
+    instruction telling you how to play was unreadable until you had
+    already worked out how to play. Still a plain line of text, it is just
+    on the lit side of the dark now.
+
+    The colour has to flip with it. var(--muted) is #444444, which is for
+    black text on the white page; left alone up here it would be dark grey
+    on black, which is lifting the line into the light and still not being
+    able to read it.
+  */
+  .hint {
+    position: relative;
+    z-index: 47;
+    color: rgba(255, 255, 255, 0.8);
+  }
 }
 
 /* The game is over once the lights are on, so stop telling people to play. */
