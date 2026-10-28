@@ -1,6 +1,6 @@
 export default function LaluPiPage() {
   return (
-    <main className="min-h-screen px-6 py-16">
+    <main className="min-h-dvh px-6 py-16">
       <section className="max-w-3xl mx-auto">
         <h1 className="mb-2 text-4xl">LaluPi</h1>
         <p className="mb-10">
