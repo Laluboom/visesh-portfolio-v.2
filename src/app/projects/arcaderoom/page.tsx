@@ -11,7 +11,7 @@ function ArcadeModel() {
 
 export default function ArcadePage() {
   return (
-    <div className="w-full h-screen text-white bg-black">
+    <div className="w-full h-dvh text-white bg-black">
       <h1 className="box absolute z-10 bg-white px-4 text-2xl font-bold text-black top-4 left-4">Arcade Room</h1>
 
       <div className="box absolute left-4 top-16 z-10 max-w-sm bg-white px-4 text-sm text-black">

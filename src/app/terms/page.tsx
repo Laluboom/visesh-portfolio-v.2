@@ -1,6 +1,6 @@
 export default function TermsPage() {
   return (
-    <main className="min-h-screen px-6 py-16">
+    <main className="min-h-dvh px-6 py-16">
       <section className="max-w-3xl mx-auto space-y-8">
         <div>
           <h1 className="mb-2 text-4xl">Terms of Service</h1>

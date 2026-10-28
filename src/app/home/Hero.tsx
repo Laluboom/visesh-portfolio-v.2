@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+    <section className="flex flex-col items-center justify-center min-h-dvh px-4 text-center">
       <h1 className="text-7xl font-bold uppercase sm:text-9xl">Lalu Boom</h1>
 
       <p className="mt-8 max-w-xl text-lg">
